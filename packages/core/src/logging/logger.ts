@@ -8,8 +8,11 @@ export interface LogFields {
   readonly product?: string;
   readonly tool?: string;
   readonly requestId?: string;
+  readonly method?: string;
+  readonly path?: string;
   readonly durationMs?: number;
   readonly status?: string;
+  readonly attempt?: number;
 }
 
 export interface Logger {
@@ -64,8 +67,11 @@ export class ConsoleLogger implements Logger {
     if (fields?.product !== undefined) entry.product = fields.product;
     if (fields?.tool !== undefined) entry.tool = fields.tool;
     if (fields?.requestId !== undefined) entry.request_id = fields.requestId;
+    if (fields?.method !== undefined) entry.method = fields.method;
+    if (fields?.path !== undefined) entry.path = fields.path;
     if (fields?.durationMs !== undefined) entry.duration_ms = fields.durationMs;
     if (fields?.status !== undefined) entry.status = fields.status;
+    if (fields?.attempt !== undefined) entry.attempt = fields.attempt;
 
     this.writeLine(`${JSON.stringify(redactSecrets(entry))}\n`);
   }

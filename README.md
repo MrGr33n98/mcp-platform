@@ -16,13 +16,19 @@ MCP app
   ├─ logging + secret redaction
   ├─ audit sink
   └─ MCP server factory + stdio transport
+  ▼
+@mcp-platform/rails-api-client
+  └─ fixed-origin GET requests only
+  ▼
+Rails API
 ```
 
-The Rails HTTP client, shared business tools, and OEST/Avalia adapters are intentionally not implemented yet. They remain future phases and must preserve the API-first boundary described in [the architecture documentation](docs/ARCHITECTURE.md).
+Shared business tools and the OEST/Avalia adapters are intentionally not implemented yet. They remain future phases and must preserve the API-first boundary described in [the architecture documentation](docs/ARCHITECTURE.md).
 
 ## Implemented packages
 
 - `@mcp-platform/core`: reusable MCP server factory, read-only registry, typed tool contract, configuration, request context, error normalization, redaction, JSON logger, audit interface, stdio transport, and `get_platform_info`.
+- `@mcp-platform/rails-api-client`: generic Rails API client. It permits only fixed-origin relative `/api/...` GET requests, adds MCP headers, bounds response size, validates optional Zod response schemas, and uses the core error/redaction contracts.
 - `@mcp-platform/platform-smoke`: a minimal local app that registers only `get_platform_info`; it does not call Rails or any network service.
 
 ## Install and validate
@@ -78,9 +84,50 @@ const getExample: ToolDefinition<typeof getExampleInput> = {
 
 Future product tools must call only fixed, authorized Rails API read models. They must not accept URLs, SQL, shell commands, file paths, headers, credentials, or arbitrary executable input.
 
+## Rails API client (GET-only V1)
+
+`@mcp-platform/rails-api-client` is the only future path from a product adapter to a Rails application. It has no database, Redis, Sidekiq, Rails-model, filesystem, shell, or mutation capability. It exposes `get` only; there is no public generic request method and no `post`, `put`, `patch`, or `delete` method.
+
+```ts
+import { RailsApiClient } from "@mcp-platform/rails-api-client";
+import { z } from "zod";
+
+const client = new RailsApiClient({
+  baseUrl: process.env.RAILS_API_BASE_URL ?? "",
+  apiKey: process.env.RAILS_API_KEY ?? "",
+  productId: "oest",
+  clientName: "oest-mcp",
+});
+
+const companySchema = z.object({ id: z.string(), name: z.string() }).strict();
+const company = await client.get({
+  path: "/api/v1/companies/company-123",
+  requestId: "per-call-request-id",
+  responseSchema: companySchema,
+});
+```
+
+The client validates `baseUrl` as HTTP(S), rejects credentials, query strings, and fragments in that configuration, and then accepts only `/api/...` paths resolved against the configured origin. Protocol overrides, `//host`, backslashes, inline query strings, fragments, and non-API paths are blocked. Query data must be a flat object of strings, numbers, booleans, or `undefined`; it is encoded with `URLSearchParams`.
+
+Every GET includes `Authorization: Bearer <apiKey>`, `Accept: application/json`, `X-Request-ID`, `X-MCP-Client`, and `X-Product-ID`. The client never logs request or response bodies, authorization values, cookies, raw headers, or full URLs. It emits only redacted structured metadata through an optional core logger: request ID, method, relative path, status, duration, and attempt.
+
+| Configuration | Required | Default |
+|---|---:|---|
+| `baseUrl` | yes | none |
+| `apiKey` | yes | none |
+| `productId` | yes | none |
+| `clientName` | yes | none |
+| `timeoutMs` | no | `10000` |
+| `maxRetries` | no | `2` (maximum `2`) |
+| `maxResponseBytes` | no | `2097152` (2 MiB) |
+
+Responses must be JSON except for `204 No Content`. Malformed JSON, unexpected content types, bodies exceeding the size limit, and Zod schema failures are rejected without returning the upstream payload. The public MCP response continues to use the core error envelope and the original request ID.
+
+Retries are limited to two additional attempts with bounded exponential backoff, and only occur for `429`, `502`, `503`, `504`, timeouts, or transient network failures. The client does not retry `400`, `401`, `403`, `404`, or `422`; it does not follow redirects. HTTP failures are mapped to stable `RAILS_API_*` codes such as `RAILS_API_TIMEOUT`, `RAILS_API_UNAUTHORIZED`, `RAILS_API_NOT_FOUND`, `RAILS_API_RATE_LIMITED`, and `RAILS_API_UPSTREAM_ERROR`.
+
 ## Read-only and security policy
 
-V1 accepts only `readOnly: true` tools and advertises `readOnlyHint: true` through the official MCP SDK. The registry, not the annotation, enforces the policy. There are no mutation, database, filesystem, shell, eval, network, Rails, Redis, or Sidekiq capabilities in this phase.
+V1 accepts only `readOnly: true` tools and advertises `readOnlyHint: true` through the official MCP SDK. The registry, not the annotation, enforces the policy. The generic Rails client permits only read-only GET calls to its configured Rails API origin. There are no mutation, database, filesystem, shell, eval, Redis, or Sidekiq capabilities in this platform.
 
 Errors use a stable envelope with a request ID and never include a stack trace. The logger, audit sink, serialized tool output, and normalized known errors centrally redact API keys, authorization headers, tokens, passwords, secrets, and cookies. Do not log `process.env` or raw HTTP payloads.
 

@@ -9,16 +9,15 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/platform-smoke",
-    "typecheck": "npm run build --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/platform-smoke",
-    "test": "npm run test --workspace=@mcp-platform/core",
+    "build": "npm run build --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run build --workspace=@mcp-platform/platform-smoke",
+    "typecheck": "npm run build --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/rails-api-client && npm run typecheck --workspace=@mcp-platform/platform-smoke",
+    "test": "npm run test --workspace=@mcp-platform/core && npm run test --workspace=@mcp-platform/rails-api-client",
     "dev:smoke": "npm run build --workspace=@mcp-platform/core && npm run dev --workspace=@mcp-platform/platform-smoke",
     "start:smoke": "npm run build && npm run start --workspace=@mcp-platform/platform-smoke"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "engines": {
     "node": ">=20"
   },
