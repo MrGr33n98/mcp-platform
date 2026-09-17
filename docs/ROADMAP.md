@@ -12,10 +12,17 @@ Critério de saída: decisões e interfaces revisáveis, sem blocker arquitetura
 
 ## V1 — Core + stdio + HTTP client + tools read-only
 
-- Configurar workspace TypeScript e packages, incluindo MCP SDK e Zod somente quando iniciar a implementação.
-- Implementar `core`: registry, config, contexto, erros, logging/audit e limites.
+### Phase 2 — MCP Core (concluída em 2026-09-17)
+
+- [x] Converter o repositório para npm workspaces com `@mcp-platform/core` e `@mcp-platform/platform-smoke`.
+- [x] Implementar core: registry read-only, context/request IDs, config Zod, erros, redaction, logger, audit, factory MCP e `stdio`.
+- [x] Integrar o SDK oficial `@modelcontextprotocol/server` e registrar `get_platform_info`.
+- [x] Cobrir registry, contexto, erros, redaction, config, plataforma e auditoria com testes locais sem rede, Rails ou banco.
+- [x] Passar typecheck, testes, build e startup do smoke server.
+
+### Itens remanescentes de V1
+
 - Implementar `RailsApiClient`: HTTPS allowlisted, Bearer, timeout, abort, tamanho máximo, redaction e erro normalizado.
-- Implementar transport `stdio`, mantendo stdout exclusivo ao protocolo.
 - Implementar shared tools e fixtures/testes unitários de schemas, URL, erros, limites e redaction.
 - Registrar somente tools V1 read-only e validar que nenhum método fora de `GET` pode ser chamado.
 

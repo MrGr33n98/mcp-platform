@@ -1,22 +1,31 @@
 {
   "name": "mcp-platform",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Reusable, read-only MCP platform core.",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/platform-smoke",
+    "typecheck": "npm run build --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/platform-smoke",
+    "test": "npm run test --workspace=@mcp-platform/core",
+    "dev:smoke": "npm run build --workspace=@mcp-platform/core && npm run dev --workspace=@mcp-platform/platform-smoke",
+    "start:smoke": "npm run build && npm run start --workspace=@mcp-platform/platform-smoke"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "dependencies": {
-    "tsx": "^4.23.13",
-    "typescript": "^7.0.2",
-    "zod": "^4.6.5"
+  "engines": {
+    "node": ">=20"
   },
   "devDependencies": {
     "@types/node": "^22.20.3",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2",
     "vitest": "^5.0.1"
   }
 }
