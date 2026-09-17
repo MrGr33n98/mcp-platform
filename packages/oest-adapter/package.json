@@ -1,0 +1,27 @@
+{
+  "name": "@mcp-platform/oest-adapter",
+  "version": "0.1.0",
+  "description": "Read-only OEST / DroneHub MCP product adapter.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@mcp-platform/core": "file:../core",
+    "@mcp-platform/rails-api-client": "file:../rails-api-client",
+    "@mcp-platform/shared-tools": "file:../shared-tools",
+    "zod": "^4.6.5"
+  }
+}

@@ -23,14 +23,16 @@ MCP app
 Rails API
 ```
 
-The OEST/Avalia adapters are intentionally not implemented yet. They remain future phases and must preserve the API-first boundary described in [the architecture documentation](docs/ARCHITECTURE.md).
+The OEST adapter is implemented from confirmed DroneHub read endpoints. Avalia remains a future adapter and must preserve the API-first boundary described in [the architecture documentation](docs/ARCHITECTURE.md).
 
 ## Implemented packages
 
 - `@mcp-platform/core`: reusable MCP server factory, read-only registry, typed tool contract, configuration, request context, error normalization, redaction, JSON logger, audit interface, stdio transport, and `get_platform_info`.
-- `@mcp-platform/rails-api-client`: generic Rails API client. It permits only fixed-origin relative `/api/...` GET requests, adds MCP headers, bounds response size, validates optional Zod response schemas, and uses the core error/redaction contracts.
+- `@mcp-platform/rails-api-client`: generic Rails API client. It permits only fixed-origin relative `/api/...` GET requests plus the literal trusted `/health` exception, adds MCP headers, bounds response size, validates optional Zod response schemas, and uses the core error/redaction contracts.
 - `@mcp-platform/shared-tools`: reusable read-only health, integration, subscription, usage, webhook, and API-key metadata tools. It receives capabilities and endpoint paths from a future product adapter; it contains no OEST or Avalia endpoint.
 - `@mcp-platform/platform-smoke`: a minimal local app that registers only `get_platform_info`; it does not call Rails or any network service.
+- `@mcp-platform/oest-adapter`: product adapter for confirmed OEST / DroneHub read models. It owns fixed endpoint mappings, validates upstream envelopes, and exposes only reduced safe outputs.
+- `@mcp-platform/oest-mcp`: OEST stdio app that assembles the core, Rails client, shared OEST capabilities, and OEST domain tools.
 
 ## Install and validate
 
@@ -108,7 +110,7 @@ const company = await client.get({
 });
 ```
 
-The client validates `baseUrl` as HTTP(S), rejects credentials, query strings, and fragments in that configuration, and then accepts only `/api/...` paths resolved against the configured origin. Protocol overrides, `//host`, backslashes, inline query strings, fragments, and non-API paths are blocked. Query data must be a flat object of strings, numbers, booleans, or `undefined`; it is encoded with `URLSearchParams`.
+The client validates `baseUrl` as HTTP(S), rejects credentials, query strings, and fragments in that configuration, and then accepts only `/api/...` paths or the literal `/health`, resolved against the configured origin. Protocol overrides, `//host`, backslashes, inline query strings, fragments, `/`, `/foo`, and every other root path are blocked. Query data must be a flat object of strings, numbers, booleans, or `undefined`; it is encoded with `URLSearchParams`.
 
 Every GET includes `Authorization: Bearer <apiKey>`, `Accept: application/json`, `X-Request-ID`, `X-MCP-Client`, and `X-Product-ID`. The client never logs request or response bodies, authorization values, cookies, raw headers, or full URLs. It emits only redacted structured metadata through an optional core logger: request ID, method, relative path, status, duration, and attempt.
 
@@ -155,6 +157,43 @@ if (capabilities.hasCapability("system_health")) {
 `SharedEndpointMap` has optional mappings for `systemHealth`, `integrationHealth`, `subscriptionSummary`, `usageSummary`, `failedWebhooks`, and `apiKeyUsage`. Its values must be safe relative API paths. If a factory is invoked without its capability, execution fails closed with `CAPABILITY_NOT_AVAILABLE`; it never guesses an endpoint.
 
 All inputs are strict Zod schemas. Usage periods are a fixed enum and webhook pagination defaults to `page=1`, `per_page=25`, with `per_page` capped at `100`. All Rails responses are validated with strict Zod schemas before returning. API-key and webhook payloads reject raw key material, signature secrets, bodies, headers, and unrecognized fields; health diagnostics reject URLs, hostnames, credentials, stack/environment references, and secret markers.
+
+## OEST / DroneHub adapter (read-only V1)
+
+`@mcp-platform/oest-adapter` uses only the endpoints confirmed in `MCP_OEST_BACKEND_DISCOVERY.md`. It never sends tenant, organization, endpoint, method, or credential values supplied by the model. Rails authentication, API-key scope checks, organization resolution, `TenantScope`, and Pundit remain in DroneHub.
+
+Shared capabilities enabled by the fixed OEST mapping:
+
+- `get_system_health` → `GET /health`
+- `get_subscription_summary` → `GET /api/v1/billing/plan`
+- `get_usage_summary` → `GET /api/v1/billing/usage`
+- `get_api_key_usage` → `GET /api/v1/enterprise/api_keys`
+
+Domain tools:
+
+- `get_organization_summary` → enterprise or operator dashboard, selected at trusted app configuration time
+- `list_missions`, `get_mission`, `get_mission_summary`
+- `list_operators`, `get_operator_summary` (public marketplace data)
+- `get_quote_summary`, `get_order_summary`, `get_deliverable_summary`
+
+`get_integration_health`, `get_failed_webhooks`, and `get_failed_jobs` are deliberately unavailable because no confirmed endpoint supports them. The adapter never creates a fallback or mock production route. It strips API-key material, digests, storage keys, presigned URLs, raw proposals, private notification data, and internal metadata before returning tool output.
+
+Run the OEST stdio application after creating `apps/oest-mcp/.env` from its `.env.example` (the application itself reads environment variables; do not commit an `.env` file):
+
+```bash
+npm run dev:oest
+# or, after building
+npm run start:oest
+```
+
+| Variable | Required | Purpose |
+|---|---:|---|
+| `OEST_API_URL` | yes | Trusted DroneHub Rails API base URL |
+| `OEST_MCP_API_KEY` | yes | API credential sent only as a Bearer header |
+| `OEST_MCP_PRODUCT_ID` | yes | MCP product identity |
+| `OEST_MCP_PRODUCT_NAME` | yes | Safe MCP product display name |
+| `OEST_DASHBOARD_KIND` | no | `enterprise` (default) or `operator`; never model-controlled |
+| `MCP_LOG_LEVEL` / `MCP_VERSION` | no | Core operational metadata |
 
 ## Read-only and security policy
 

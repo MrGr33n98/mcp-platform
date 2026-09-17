@@ -100,6 +100,28 @@ describe("RailsApiClient", () => {
     });
   });
 
+  it("accepts the fixed health endpoint without widening the origin boundary", async () => {
+    await withServer(sendSuccessfulJson, async (server) => {
+      const client = createClient(server.baseUrl);
+
+      await client.get({ path: "/health", requestId: "request-health" });
+
+      expect(server.requests[0]?.url).toBe("/health");
+    });
+  });
+
+  it.each(["/", "/foo", "file:///etc/passwd", "data:text/plain,blocked", "javascript:alert(1)", "/health/extra"]) (
+    "rejects every root path except the literal health endpoint: %s",
+    async (path) => {
+      const client = createClient("http://127.0.0.1:65530");
+
+      await expectMcpError(
+        client.get({ path, requestId: "request-invalid-root-path" }),
+        "RAILS_API_INVALID_PATH",
+      );
+    },
+  );
+
   it("rejects arbitrary external URLs", async () => {
     const client = createClient("http://127.0.0.1:65530");
 

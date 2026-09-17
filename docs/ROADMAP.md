@@ -37,10 +37,13 @@ Critério de saída: servidor local MCP validado por testes sem acesso a banco/s
 
 ## V1.1 — Integração OEST em produção
 
-- Definir read models e policies `/api/mcp/v1` no Rails OEST em tarefa própria.
-- Implementar `OestAdapter` e `apps/oest-mcp`.
-- Integrar organização, missões, operadores, quote/order/deliverable, failed jobs e capabilities shared aprovadas.
-- Adicionar testes de contrato Rails ↔ adapter, cenários de negação e cross-tenant.
+- Confirmar endpoints e contratos de resposta existentes no Rails OEST em discovery read-only.
+- [x] Phase 5B — implementar `@mcp-platform/oest-adapter` e `@mcp-platform/oest-mcp` sobre endpoints reais confirmados, sem alterar DroneHub.
+- [x] Integrar organização, missões, operadores, quote/order/deliverable e as capabilities shared confirmadas (`health`, plano, uso e metadata de API keys).
+- [x] Bloquear `get_failed_jobs`, `get_failed_webhooks` e `get_integration_health` enquanto não houver endpoint confirmado.
+- [x] Validar contratos, negação de inputs, erros upstream, paginação e remoção de segredos/URLs privadas com testes HTTP locais.
+- [ ] Phase 5C — executar testes de integração/contrato contra ambiente OEST autorizado, incluindo cenários cross-tenant, Pundit e escopos de API key.
+- [ ] Configurar observabilidade, rate limits, rotação de key e rollout controlado.
 - Configurar observabilidade, rate limits, rotação de key e rollout controlado.
 
 Critério de saída: ferramentas OEST exibem apenas dados permitidos pelo tenant/principal e atendem SLOs definidos.

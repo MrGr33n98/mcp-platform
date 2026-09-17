@@ -16,7 +16,7 @@ export function buildRelativeApiUrl(
   validatePath(path);
 
   const target = new URL(path, baseUrl);
-  if (target.origin !== baseUrl.origin || !target.pathname.startsWith("/api/")) {
+  if (target.origin !== baseUrl.origin || !isApprovedRelativePath(target.pathname)) {
     throw invalidPathError();
   }
 
@@ -51,7 +51,7 @@ export function serializeQuery(query: RailsApiQuery | undefined): string {
 function validatePath(path: string): void {
   if (
     typeof path !== "string" ||
-    !path.startsWith("/api/") ||
+    !isApprovedRelativePath(path) ||
     path.startsWith("//") ||
     path.includes("\\") ||
     path.includes("?") ||
@@ -59,6 +59,10 @@ function validatePath(path: string): void {
   ) {
     throw invalidPathError();
   }
+}
+
+function isApprovedRelativePath(path: string): boolean {
+  return path === "/health" || path.startsWith("/api/");
 }
 
 function isQueryValue(value: unknown): value is RailsApiQueryValue {

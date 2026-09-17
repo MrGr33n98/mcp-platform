@@ -9,7 +9,7 @@ const endpointPathSchema = z
   .max(512)
   .refine(
     (path) =>
-      path.startsWith("/api/") &&
+      (path === "/health" || path.startsWith("/api/")) &&
       !path.startsWith("//") &&
       !path.includes("\\") &&
       !path.includes("?") &&

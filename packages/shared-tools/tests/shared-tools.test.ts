@@ -43,13 +43,13 @@ describe("shared read-only tools", () => {
 
   it("exposes only endpoint-backed shared capabilities", () => {
     const capabilities = createSharedCapabilities({
-      systemHealth: "/api/test/system-health",
+      systemHealth: "/health",
     });
 
     expect(capabilities.hasCapability("system_health")).toBe(true);
     expect(capabilities.hasCapability("usage_summary")).toBe(false);
     expect(capabilities.requireCapability("system_health")).toBe(
-      "/api/test/system-health",
+      "/health",
     );
   });
 
@@ -370,6 +370,10 @@ describe("shared read-only tools", () => {
       createSharedCapabilities({
         systemHealth: "https://untrusted.example/api/test/health",
       }),
+    ).toThrow(/Shared tool endpoint configuration is invalid/);
+
+    expect(() =>
+      createSharedCapabilities({ systemHealth: "/not-health" }),
     ).toThrow(/Shared tool endpoint configuration is invalid/);
   });
 
