@@ -20,11 +20,18 @@ Critério de saída: decisões e interfaces revisáveis, sem blocker arquitetura
 - [x] Cobrir registry, contexto, erros, redaction, config, plataforma e auditoria com testes locais sem rede, Rails ou banco.
 - [x] Passar typecheck, testes, build e startup do smoke server.
 
-### Itens remanescentes de V1
+### Phase 3 — Rails API Client (concluída em 2026-09-17)
 
-- Implementar `RailsApiClient`: HTTPS allowlisted, Bearer, timeout, abort, tamanho máximo, redaction e erro normalizado.
-- Implementar shared tools e fixtures/testes unitários de schemas, URL, erros, limites e redaction.
-- Registrar somente tools V1 read-only e validar que nenhum método fora de `GET` pode ser chamado.
+- [x] Implementar `RailsApiClient` GET-only com origem configurada, Bearer, timeout/abort, retry limitado, resposta JSON limitada e redaction.
+- [x] Validar configuração, query, headers, SSRF, erros HTTP e schemas Zod com servidor HTTP local.
+- [x] Garantir que nenhum método mutável ou request genérico seja exposto.
+
+### Phase 4 — Shared Read-only Tools (concluída em 2026-09-17)
+
+- [x] Criar `@mcp-platform/shared-tools` com capabilities e `SharedEndpointMap` configurados pelo adapter.
+- [x] Implementar factories read-only para system health, integration health, subscription summary, usage summary, failed webhooks e API key usage.
+- [x] Validar inputs, paginação, responses Rails e sanitização de diagnósticos/segredos com Zod estrito.
+- [x] Cobrir capabilities ausentes, endpoint model-controlled bloqueado, erros upstream, redaction e registro determinístico no `ToolRegistry`.
 
 Critério de saída: servidor local MCP validado por testes sem acesso a banco/shell/filesystem e com auditoria segura.
 

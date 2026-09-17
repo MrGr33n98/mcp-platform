@@ -9,9 +9,9 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run build --workspace=@mcp-platform/platform-smoke",
-    "typecheck": "npm run build --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/rails-api-client && npm run typecheck --workspace=@mcp-platform/platform-smoke",
-    "test": "npm run test --workspace=@mcp-platform/core && npm run test --workspace=@mcp-platform/rails-api-client",
+    "build": "npm run build --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run build --workspace=@mcp-platform/shared-tools && npm run build --workspace=@mcp-platform/platform-smoke",
+    "typecheck": "npm run build --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run typecheck --workspace=@mcp-platform/rails-api-client && npm run typecheck --workspace=@mcp-platform/shared-tools && npm run typecheck --workspace=@mcp-platform/platform-smoke",
+    "test": "npm run test --workspace=@mcp-platform/core && npm run test --workspace=@mcp-platform/rails-api-client && npm run test --workspace=@mcp-platform/shared-tools",
     "dev:smoke": "npm run build --workspace=@mcp-platform/core && npm run dev --workspace=@mcp-platform/platform-smoke",
     "start:smoke": "npm run build && npm run start --workspace=@mcp-platform/platform-smoke"
   },
