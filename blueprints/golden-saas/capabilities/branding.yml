@@ -1,0 +1,51 @@
+schema_version: 1
+
+capability:
+  id: branding
+  name: White-Labeling & Visual Theming
+  category: UX
+  classification: RECOMMENDED
+
+requirements:
+  domain_objects:
+    - TenantBranding
+    - CustomDomain
+
+  security:
+    tenant_scoped: true
+    css_sanitized: true
+    html_sanitized: true
+    anti_xss_enforced: true
+
+  backend:
+    models:
+      - TenantBranding
+      - CustomDomain
+    controllers:
+      - BrandingController
+    jobs:
+      - VerifyCustomDomainDnsJob
+      - IssueSslCertificateJob
+
+  api:
+    endpoints:
+      - method: GET
+        path: /api/v1/branding/current
+      - method: PATCH
+        path: /api/v1/organizations/current/branding
+      - method: POST
+        path: /api/v1/organizations/current/branding/logo
+
+  admin:
+    required: true
+    resource: TenantBranding
+
+  customer_frontend:
+    required: true
+    pages:
+      - /settings/branding
+
+  tests:
+    model: true
+    sanitization: true
+    cross_tenant: true

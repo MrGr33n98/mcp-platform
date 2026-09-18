@@ -1,0 +1,74 @@
+schema_version: 1
+
+capability:
+  id: authentication
+  name: Multi-Tenant Authentication & Identity
+  category: CORE
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - User
+    - Session
+    - MfaCredential
+    - OauthIdentity
+    - PasswordResetToken
+
+  security:
+    tenant_scoped: true
+    timing_safe_login: true
+    password_hashing: bcrypt
+    mfa_supported: true
+    session_revocation: true
+    rate_limited: true
+
+  backend:
+    models:
+      - User
+      - Session
+      - MfaCredential
+      - OauthIdentity
+    controllers:
+      - AuthController
+      - SessionsController
+      - MfaController
+    policies:
+      - UserPolicy
+      - SessionPolicy
+    jobs:
+      - SendPasswordResetEmailJob
+      - SendEmailVerificationJob
+      - CleanupExpiredSessionsJob
+
+  api:
+    endpoints:
+      - method: POST
+        path: /api/v1/auth/login
+      - method: POST
+        path: /api/v1/auth/mfa/challenge
+      - method: POST
+        path: /api/v1/auth/logout
+      - method: GET
+        path: /api/v1/auth/sessions
+      - method: DELETE
+        path: /api/v1/auth/sessions/:id
+
+  admin:
+    required: true
+    resource: User
+
+  customer_frontend:
+    required: true
+    pages:
+      - /login
+      - /signup
+      - /reset-password
+      - /settings/security
+
+  tests:
+    model: true
+    request: true
+    service: true
+    policy: true
+    timing_safe: true
+    cross_tenant: true

@@ -1,0 +1,20 @@
+schema_version: 1
+capability_id: background_jobs
+name: Background Jobs & Queues
+category: OPERATIONS
+severity: P2_NORMAL
+description: Processamento assíncrono robusto com retentativas, DLQ e priorização.
+reference_implementation: "LastSaaS Inngest/BullMQ"
+golden_stack_adaptation: "Rails 8 Sidekiq + ActiveJob + Redis + Retry with Exponential Backoff"
+
+requirements:
+  - id: JOB-001
+    title: Sidekiq Queue Configuration
+    description: Configuração de filas com pesos e prioridades (critical, default, low_priority).
+    type: CONFIG
+    required: true
+  - id: JOB-002
+    title: Retry & Error Handling
+    description: Jobs estruturados com retry_on e isolamento de contexto de tenant.
+    type: JOB
+    required: true

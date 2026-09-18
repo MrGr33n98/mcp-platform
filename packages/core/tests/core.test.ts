@@ -15,6 +15,8 @@ import { executeToolCall } from "../src/server/create-mcp-server.js";
 import { emptyObjectSchema } from "../src/schemas/common.js";
 import { createPlatformInfoTool } from "../src/tools/platform-info.js";
 import type { ToolDefinition } from "../src/tools/tool-definition.js";
+import { MetricsCollector } from "../src/metrics.js";
+import { TokenBucketRateLimiter } from "../src/rate-limiter.js";
 
 const noopLogger: Logger = {
   debug() {},
@@ -69,7 +71,7 @@ describe("ToolRegistry", () => {
     );
   });
 
-  it("rejects mutation tools", () => {
+  it("rejects mutation tools without riskLevel", () => {
     const registry = new ToolRegistry();
     const mutation = {
       ...createValidTool("delete_alpha"),
@@ -77,6 +79,50 @@ describe("ToolRegistry", () => {
     } as ToolDefinition;
 
     expect(() => registry.register(mutation)).toThrowError(McpPlatformError);
+  });
+
+  it("registers valid mutation tools with explicit riskLevel", () => {
+    const registry = new ToolRegistry();
+    const writeTool: ToolDefinition<typeof emptyObjectSchema> = {
+      ...createValidTool("create_alpha"),
+      readOnly: false,
+      riskLevel: "write",
+    };
+    const sensitiveTool: ToolDefinition<typeof emptyObjectSchema> = {
+      ...createValidTool("cancel_alpha"),
+      readOnly: false,
+      riskLevel: "sensitive",
+    };
+    const destructiveTool: ToolDefinition<typeof emptyObjectSchema> = {
+      ...createValidTool("delete_alpha"),
+      readOnly: false,
+      riskLevel: "destructive",
+    };
+
+    registry.register(writeTool);
+    registry.register(sensitiveTool);
+    registry.register(destructiveTool);
+
+    expect(registry.get("create_alpha")?.riskLevel).toBe("write");
+    expect(registry.get("cancel_alpha")?.riskLevel).toBe("sensitive");
+    expect(registry.get("delete_alpha")?.riskLevel).toBe("destructive");
+  });
+
+  it("rejects invalid riskLevel combinations", () => {
+    const registry = new ToolRegistry();
+    const invalidRead: ToolDefinition<typeof emptyObjectSchema> = {
+      ...createValidTool("invalid_read"),
+      readOnly: true,
+      riskLevel: "write",
+    };
+    const invalidWrite: ToolDefinition<typeof emptyObjectSchema> = {
+      ...createValidTool("invalid_write"),
+      readOnly: false,
+      riskLevel: "read",
+    };
+
+    expect(() => registry.register(invalidRead)).toThrowError(McpPlatformError);
+    expect(() => registry.register(invalidWrite)).toThrowError(McpPlatformError);
   });
 
   it("rejects invalid tool names", () => {
@@ -338,3 +384,53 @@ describe("audited tool execution", () => {
     });
   });
 });
+
+describe("MetricsCollector", () => {
+  it("records metrics and calculates accurate summary and percentiles", () => {
+    const collector = new MetricsCollector(100);
+
+    collector.record({ toolName: "get_mission", durationMs: 50, success: true });
+    collector.record({ toolName: "get_mission", durationMs: 100, success: true });
+    collector.record({ toolName: "get_mission", durationMs: 200, success: false, errorCode: "RAILS_API_NOT_FOUND" });
+    collector.record({ toolName: "list_missions", durationMs: 80, success: true });
+
+    const summary = collector.getSummary();
+    expect(summary.totalExecutions).toBe(4);
+    expect(summary.totalSuccess).toBe(3);
+    expect(summary.totalErrors).toBe(1);
+    expect(summary.errorRate).toBe(0.25);
+    expect(summary.latency.minMs).toBe(50);
+    expect(summary.latency.maxMs).toBe(200);
+    expect(summary.latency.avgMs).toBe(107.5);
+    expect(summary.errorCodeBreakdown["RAILS_API_NOT_FOUND"]).toBe(1);
+    expect(summary.toolBreakdown["get_mission"]).toEqual({
+      count: 3,
+      errors: 1,
+      avgDurationMs: 116.67,
+    });
+  });
+
+  it("handles empty metrics cleanly", () => {
+    const collector = new MetricsCollector();
+    const summary = collector.getSummary();
+    expect(summary.totalExecutions).toBe(0);
+    expect(summary.errorRate).toBe(0);
+  });
+});
+
+describe("TokenBucketRateLimiter", () => {
+  it("allows requests within burst capacity and refills over time", async () => {
+    const limiter = new TokenBucketRateLimiter({
+      maxRequests: 10,
+      windowMs: 1000,
+      burstCapacity: 2,
+    });
+
+    expect(limiter.tryAcquire()).toBe(true);
+    expect(limiter.tryAcquire()).toBe(true);
+    expect(limiter.tryAcquire()).toBe(false);
+
+    await expect(limiter.acquire()).rejects.toThrowError(McpPlatformError);
+  });
+});
+

@@ -1,0 +1,71 @@
+schema_version: 1
+
+capability:
+  id: tenancy
+  name: Multi-Tenancy, Memberships & RBAC
+  category: CORE
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - Organization
+    - Membership
+    - Invitation
+    - TenantSetting
+
+  security:
+    tenant_scoped: true
+    strict_isolation: true
+    rbac_enforced: true
+    ownership_transfer_confirmation: true
+
+  backend:
+    models:
+      - Organization
+      - Membership
+      - Invitation
+      - TenantSetting
+    controllers:
+      - OrganizationsController
+      - MembershipsController
+      - InvitationsController
+    policies:
+      - OrganizationPolicy
+      - MembershipPolicy
+      - InvitationPolicy
+    jobs:
+      - SendInvitationEmailJob
+      - PurgeExpiredInvitationsJob
+
+  api:
+    endpoints:
+      - method: GET
+        path: /api/v1/organizations/current
+      - method: PATCH
+        path: /api/v1/organizations/current
+      - method: GET
+        path: /api/v1/organizations/current/members
+      - method: DELETE
+        path: /api/v1/organizations/current/members/:id
+      - method: POST
+        path: /api/v1/organizations/current/invitations
+      - method: POST
+        path: /api/v1/organizations/current/transfer_ownership
+
+  admin:
+    required: true
+    resources:
+      - Organization
+      - Membership
+
+  customer_frontend:
+    required: true
+    pages:
+      - /settings/team
+      - /settings/organization
+
+  tests:
+    model: true
+    request: true
+    policy: true
+    cross_tenant: true

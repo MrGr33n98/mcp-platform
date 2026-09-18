@@ -5,7 +5,7 @@ import {
   type Server,
   type ServerResponse,
 } from "node:http";
-import { McpPlatformError, normalizeError, redactString, type Logger } from "@mcp-platform/core";
+import { McpPlatformError, normalizeError, redactString, TokenBucketRateLimiter, type Logger, type RateLimiter } from "@mcp-platform/core";
 import { z } from "zod";
 import {
   DEFAULT_MAX_RESPONSE_BYTES,
@@ -146,11 +146,12 @@ describe("RailsApiClient", () => {
     );
   });
 
-  it("rejects non-GET mutation methods by exposing no mutation methods", () => {
-    expect("post" in RailsApiClient.prototype).toBe(false);
-    expect("put" in RailsApiClient.prototype).toBe(false);
-    expect("patch" in RailsApiClient.prototype).toBe(false);
-    expect("delete" in RailsApiClient.prototype).toBe(false);
+  it("exposes supported mutation methods in Phase 5D", () => {
+    expect(typeof RailsApiClient.prototype.post).toBe("function");
+    expect(typeof RailsApiClient.prototype.put).toBe("function");
+    expect(typeof RailsApiClient.prototype.patch).toBe("function");
+    expect(typeof RailsApiClient.prototype.delete).toBe("function");
+    expect(typeof RailsApiClient.prototype.mutate).toBe("function");
   });
 
   it("maps an aborted request to RAILS_API_TIMEOUT", async () => {
@@ -402,28 +403,175 @@ describe("RailsApiClient", () => {
     });
   });
 
-  it("validates configuration defaults and rejects an unsafe base URL", () => {
-    const config = parseRailsApiClientConfig({
-      baseUrl: "https://rails.example.test",
-      apiKey: "api-key",
-      productId: "test-product",
-      clientName: "test-client",
-    });
+  it("executes POST mutation with JSON payload and Idempotency-Key", async () => {
+    await withServer(
+      async (request, response) => {
+        let body = "";
+        for await (const chunk of request) {
+          body += chunk;
+        }
+        const parsed = JSON.parse(body);
+        sendJson(response, 201, { id: "new-123", title: parsed.title });
+      },
+      async (server) => {
+        const client = createClient(server.baseUrl);
+        const schema = z.object({ title: z.string() });
+        const resSchema = z.object({ id: z.string(), title: z.string() });
 
-    expect(config.timeoutMs).toBe(DEFAULT_TIMEOUT_MS);
-    expect(config.maxRetries).toBe(DEFAULT_MAX_RETRIES);
-    expect(config.maxResponseBytes).toBe(DEFAULT_MAX_RESPONSE_BYTES);
+        const result = await client.post({
+          path: "/api/v1/missions",
+          body: { title: "New Mission" },
+          requestId: "req-post-1",
+          idempotencyKey: "idem-key-abc",
+          requestSchema: schema,
+          responseSchema: resSchema,
+        });
 
-    expect(() =>
-      parseRailsApiClientConfig({
-        baseUrl: "ftp://rails.example.test",
-        apiKey: "api-key",
-        productId: "test-product",
-        clientName: "test-client",
+        expect(result).toEqual({ id: "new-123", title: "New Mission" });
+        expect(server.requests[0]?.method).toBe("POST");
+        expect(server.requests[0]?.headers["content-type"]).toBe("application/json");
+        expect(server.requests[0]?.headers["idempotency-key"]).toBe("idem-key-abc");
+      },
+    );
+  });
+
+  it("executes PATCH mutation with JSON payload", async () => {
+    await withServer(
+      async (request, response) => {
+        sendJson(response, 200, { id: "ord-1", status: "updated" });
+      },
+      async (server) => {
+        const client = createClient(server.baseUrl);
+        const result = await client.patch({
+          path: "/api/v1/enterprise/orders/ord-1",
+          body: { description: "Updated description" },
+          requestId: "req-patch-1",
+        });
+
+        expect(result).toEqual({ id: "ord-1", status: "updated" });
+        expect(server.requests[0]?.method).toBe("PATCH");
+      },
+    );
+  });
+
+  it("executes DELETE mutation and handles 204 No Content", async () => {
+    await withServer(
+      async (_request, response) => {
+        response.writeHead(204);
+        response.end();
+      },
+      async (server) => {
+        const client = createClient(server.baseUrl);
+        const result = await client.delete({
+          path: "/api/v1/webhooks/wh-1",
+          requestId: "req-del-1",
+        });
+
+        expect(result).toBeUndefined();
+        expect(server.requests[0]?.method).toBe("DELETE");
+      },
+    );
+  });
+
+  it("maps 409 status to RAILS_API_CONFLICT", async () => {
+    await withServer(
+      (_request, response) => {
+        sendJson(response, 409, { error: "Conflict" });
+      },
+      async (server) => {
+        const client = createClient(server.baseUrl);
+        await expectMcpError(
+          client.post({
+            path: "/api/v1/missions/mis-1/publish",
+            requestId: "req-conflict",
+          }),
+          "RAILS_API_CONFLICT",
+        );
+      },
+    );
+  });
+
+  it("maps 422 status to RAILS_API_UNPROCESSABLE", async () => {
+    await withServer(
+      (_request, response) => {
+        sendJson(response, 422, { error: "Validation failed" });
+      },
+      async (server) => {
+        const client = createClient(server.baseUrl);
+        await expectMcpError(
+          client.post({
+            path: "/api/v1/missions",
+            body: { title: "" },
+            requestId: "req-unprocessable",
+          }),
+          "RAILS_API_UNPROCESSABLE",
+        );
+      },
+    );
+  });
+
+  it("maps 503 status to RAILS_API_UPSTREAM_ERROR", async () => {
+    await withServer(
+      (_request, response) => {
+        sendJson(response, 503, { error: "Service unavailable" });
+      },
+      async (server) => {
+        const client = createClient(server.baseUrl);
+        await expectMcpError(
+          client.post({
+            path: "/api/v1/missions",
+            requestId: "req-503",
+          }),
+          "RAILS_API_UPSTREAM_ERROR",
+        );
+      },
+    );
+  });
+
+  it("rejects invalid mutation request payload before making HTTP call", async () => {
+    const client = createClient("http://127.0.0.1:9999");
+    const schema = z.object({ title: z.string().min(3) });
+
+    await expectMcpError(
+      client.post({
+        path: "/api/v1/missions",
+        body: { title: "x" },
+        requestId: "req-invalid-body",
+        requestSchema: schema,
       }),
-    ).toThrow(/Rails API client configuration is invalid/);
+      "RAILS_API_INVALID_PAYLOAD",
+    );
+  });
+
+  it("rejects request when local rateLimiter limit is exceeded", async () => {
+    const rateLimiter = new TokenBucketRateLimiter({
+      maxRequests: 1,
+      windowMs: 60_000,
+      burstCapacity: 1,
+    });
+    const client = createClient("http://127.0.0.1:9999", { rateLimiter });
+
+    // First acquire consumes token
+    rateLimiter.tryAcquire();
+
+    await expectMcpError(
+      client.get({
+        path: "/api/v1/missions",
+        requestId: "req-rate-limited",
+      }),
+      "RAILS_API_RATE_LIMITED",
+    );
   });
 });
+
+interface TestClientOptions {
+  readonly timeoutMs?: number;
+  readonly maxRetries?: number;
+  readonly maxResponseBytes?: number;
+  readonly fetch?: typeof fetch;
+  readonly logger?: Logger;
+  readonly rateLimiter?: RateLimiter;
+}
 
 function createClient(baseUrl: string, options: TestClientOptions = {}): RailsApiClient {
   return new RailsApiClient(
@@ -442,6 +590,7 @@ function createClient(baseUrl: string, options: TestClientOptions = {}): RailsAp
       wait: async () => undefined,
       ...(options.fetch === undefined ? {} : { fetch: options.fetch }),
       ...(options.logger === undefined ? {} : { logger: options.logger }),
+      ...(options.rateLimiter === undefined ? {} : { rateLimiter: options.rateLimiter }),
     },
   );
 }

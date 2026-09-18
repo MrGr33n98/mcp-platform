@@ -1,0 +1,52 @@
+schema_version: 1
+
+capability:
+  id: api_keys
+  name: Programmatic API Keys
+  category: INTEGRATION
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - ApiKey
+
+  security:
+    tenant_scoped: true
+    sha256_hashed: true
+    prefix_formatted: true
+    scopes_enforced: true
+    zero_plaintext_storage: true
+
+  backend:
+    models:
+      - ApiKey
+    controllers:
+      - ApiKeysController
+    policies:
+      - ApiKeyPolicy
+    jobs:
+      - UpdateLastUsedJob
+
+  api:
+    endpoints:
+      - method: GET
+        path: /api/v1/developer/api_keys
+      - method: POST
+        path: /api/v1/developer/api_keys
+      - method: DELETE
+        path: /api/v1/developer/api_keys/:id
+
+  admin:
+    required: true
+    resource: ApiKey
+
+  customer_frontend:
+    required: true
+    pages:
+      - /settings/developer
+
+  tests:
+    model: true
+    request: true
+    scopes: true
+    cross_tenant: true

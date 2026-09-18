@@ -1,9 +1,12 @@
 {
   "name": "@mcp-platform/oest-mcp",
   "version": "0.1.0",
-  "description": "Read-only OEST / DroneHub MCP stdio application.",
+  "description": "OEST / DroneHub Operational MCP stdio application.",
   "private": true,
   "type": "module",
+  "bin": {
+    "oest-mcp": "./bin/oest-mcp.js"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc --noEmit -p tsconfig.json",

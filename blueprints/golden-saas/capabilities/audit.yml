@@ -1,0 +1,46 @@
+schema_version: 1
+
+capability:
+  id: audit
+  name: Immutable Security Audit Trails
+  category: OPERATIONS
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - AuditEvent
+    - TenantActivity
+
+  security:
+    immutable_append_only: true
+    pii_redacted: true
+    secret_redacted: true
+    tamper_proof: true
+
+  backend:
+    models:
+      - AuditEvent
+      - TenantActivity
+    services:
+      - Audit::RecordEvent
+    jobs:
+      - ArchiveAuditLogsJob
+
+  api:
+    endpoints:
+      - method: GET
+        path: /api/v1/organizations/current/activity
+
+  admin:
+    required: true
+    resource: AuditEvent
+
+  customer_frontend:
+    required: true
+    pages:
+      - /settings/audit
+
+  tests:
+    immutability: true
+    redaction: true
+    cross_tenant: true

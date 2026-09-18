@@ -1,0 +1,68 @@
+schema_version: 1
+
+capability:
+  id: webhooks
+  name: Outgoing Webhooks
+  category: INTEGRATION
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - WebhookEndpoint
+    - WebhookDelivery
+    - WebhookAttempt
+
+  security:
+    tenant_scoped: true
+    signed_payload: true
+    hmac_algorithm: sha256
+    secret_rotation: true
+    aes_gcm_secret_storage: true
+    ssrf_protection: true
+
+  backend:
+    models:
+      - WebhookEndpoint
+      - WebhookDelivery
+      - WebhookAttempt
+    controllers:
+      - WebhooksController
+    policies:
+      - WebhookPolicy
+    jobs:
+      - DeliverPayloadJob
+
+  api:
+    endpoints:
+      - method: GET
+        path: /api/v1/developer/webhooks
+      - method: POST
+        path: /api/v1/developer/webhooks
+      - method: PATCH
+        path: /api/v1/developer/webhooks/:id
+      - method: DELETE
+        path: /api/v1/developer/webhooks/:id
+      - method: POST
+        path: /api/v1/developer/webhooks/:id/test
+      - method: GET
+        path: /api/v1/developer/webhooks/:id/deliveries
+
+  admin:
+    required: true
+    resources:
+      - WebhookEndpoint
+      - WebhookDelivery
+
+  customer_frontend:
+    required: true
+    pages:
+      - /settings/developer
+
+  tests:
+    model: true
+    request: true
+    service: true
+    job: true
+    policy: true
+    cross_tenant: true
+    failure_modes: true

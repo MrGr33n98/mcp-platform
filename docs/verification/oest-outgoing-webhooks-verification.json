@@ -1,0 +1,590 @@
+{
+  "schema_version": 1,
+  "verification_id": "VERIF-1789689255588-B24DUA",
+  "created_at": "2026-09-17T23:54:15.589Z",
+  "target": {
+    "product": "oest",
+    "capability": "webhooks"
+  },
+  "repository_revision": {
+    "commitSha": "8326d3538a2f2b472f060fd13e5656c48d79723c",
+    "branch": "main",
+    "dirty": true,
+    "capturedAt": "2026-09-17T23:54:15.584Z"
+  },
+  "change_plan_digest": "e09a968b3b30875517bfaef31d910087a7eea9d8a6bbe624cbe225e324555eee",
+  "status": "PASS",
+  "mode": "STATIC_VERIFY",
+  "checks": [
+    {
+      "id": "EVID-001-CAPABILITY-EVIDENCE",
+      "name": "Capability Gap Evidence Verification",
+      "category": "EVIDENCE_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Verified 5 atomic requirements with gap audit evidence."
+    },
+    {
+      "id": "EVID-003-TENANT-MODEL",
+      "name": "Tenant Model Existence (Organization)",
+      "category": "EVIDENCE_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Tenant model 'Organization' verified in active codebase."
+    },
+    {
+      "id": "PAT-001-JOB-Webhooks::DeliverPayloadJob",
+      "name": "Job Base Class Convention: Webhooks::DeliverPayloadJob",
+      "category": "PATTERN_CONFORMANCE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Job 'Webhooks::DeliverPayloadJob' adheres to dominant base class 'ApplicationJob'."
+    },
+    {
+      "id": "PAT-002-POLICY-WebhookEndpointPolicy",
+      "name": "Policy Inheritance and Scope Convention: WebhookEndpointPolicy",
+      "category": "PATTERN_CONFORMANCE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Policy 'WebhookEndpointPolicy' conforms to ApplicationPolicy and Scope pattern."
+    },
+    {
+      "id": "PAT-003-CTRL-Api::V1::Developer::WebhooksController",
+      "name": "Controller Authentication Pattern: Api::V1::Developer::WebhooksController",
+      "category": "PATTERN_CONFORMANCE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Controller 'Api::V1::Developer::WebhooksController' implements 'authenticate_api_key!'."
+    },
+    {
+      "id": "PAT-004-MODEL-WebhookEndpoint",
+      "name": "Model Tenancy Scoping: WebhookEndpoint",
+      "category": "PATTERN_CONFORMANCE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Model 'WebhookEndpoint' implements tenancy association 'belongs_to :organization'."
+    },
+    {
+      "id": "PAT-004-MODEL-WebhookDelivery",
+      "name": "Model Tenancy Scoping: WebhookDelivery",
+      "category": "PATTERN_CONFORMANCE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Model 'WebhookDelivery' implements tenancy association 'belongs_to :webhook_endpoint'."
+    },
+    {
+      "id": "PAT-004-MODEL-WebhookAttempt",
+      "name": "Model Tenancy Scoping: WebhookAttempt",
+      "category": "PATTERN_CONFORMANCE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Model 'WebhookAttempt' implements tenancy association 'belongs_to :webhook_delivery'."
+    },
+    {
+      "id": "DEP-001-DAG-ORDER",
+      "name": "Operation Dependency DAG & Ordering",
+      "category": "DEPENDENCY_GRAPH",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Operations form a valid acyclic execution DAG (Migration -> Models -> Policies -> Services -> Jobs -> Controllers -> Routes -> Tests)."
+    },
+    {
+      "id": "OP-VAL-OP-001-MIGRATION",
+      "name": "Operation Path Safety: OP-001-MIGRATION",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'db/migrate/20260917235414_create_outgoing_webhooks_tables.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-002-MODEL",
+      "name": "Operation Path Safety: OP-002-MODEL",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/models/webhook_endpoint.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-003-MODEL",
+      "name": "Operation Path Safety: OP-003-MODEL",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/models/webhook_delivery.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-004-MODEL",
+      "name": "Operation Path Safety: OP-004-MODEL",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/models/webhook_attempt.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-005-POLICY",
+      "name": "Operation Path Safety: OP-005-POLICY",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/policies/webhook_endpoint_policy.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-006-SERVICE",
+      "name": "Operation Path Safety: OP-006-SERVICE",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/services/webhooks/dispatch_service.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-007-SERVICE",
+      "name": "Operation Path Safety: OP-007-SERVICE",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/services/webhooks/hmac_signer_service.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-008-SERVICE",
+      "name": "Operation Path Safety: OP-008-SERVICE",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/services/webhooks/ssrf_validator_service.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-009-JOB",
+      "name": "Operation Path Safety: OP-009-JOB",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/jobs/webhooks/deliver_payload_job.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-010-CONTROLLER",
+      "name": "Operation Path Safety: OP-010-CONTROLLER",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/controllers/api/v1/developer/webhooks_controller.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-011-ROUTES",
+      "name": "Operation Path Safety: OP-011-ROUTES",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'config/routes.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-012-ADMIN",
+      "name": "Operation Path Safety: OP-012-ADMIN",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/admin/webhook_endpoints.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-013-ADMIN",
+      "name": "Operation Path Safety: OP-013-ADMIN",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'app/admin/webhook_deliveries.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-014-TEST",
+      "name": "Operation Path Safety: OP-014-TEST",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'spec/models/webhook_endpoint_spec.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-015-TEST",
+      "name": "Operation Path Safety: OP-015-TEST",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'spec/requests/api/v1/developer/webhooks_spec.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-016-TEST",
+      "name": "Operation Path Safety: OP-016-TEST",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'spec/requests/api/v1/developer/webhooks_cross_tenant_spec.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-017-TEST",
+      "name": "Operation Path Safety: OP-017-TEST",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'spec/services/webhooks/ssrf_validator_service_spec.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-OP-018-TEST",
+      "name": "Operation Path Safety: OP-018-TEST",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Path 'spec/jobs/webhooks/deliver_payload_job_spec.rb' is relative and well-formed."
+    },
+    {
+      "id": "OP-VAL-NO-DUPLICATE-PATHS",
+      "name": "Duplicate File Creation Detection",
+      "category": "OPERATION_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "No duplicate file creation collisions detected in plan."
+    },
+    {
+      "id": "ARCH-001-NO-COLLISIONS",
+      "name": "Architecture Graph Symbol Collision Check",
+      "category": "ARCHITECTURE_GRAPH",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "No unexpected symbol collisions with existing architecture graph nodes."
+    },
+    {
+      "id": "MIG-002-REVERSIBILITY",
+      "name": "Migration Reversibility Verification",
+      "category": "DATABASE_MIGRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Migration 'CreateOutgoingWebhooksTables' is fully reversible with standard Rails rollback."
+    },
+    {
+      "id": "MIG-003-TENANT-KEY-webhook_endpoints",
+      "name": "Tenancy Key & Isolation Constraints: webhook_endpoints",
+      "category": "DATABASE_MIGRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Table 'webhook_endpoints' has explicit tenant key 'organization_id' or cascading parent foreign key."
+    },
+    {
+      "id": "MIG-004-INDEXES-webhook_endpoints",
+      "name": "Index Coverage: webhook_endpoints",
+      "category": "DATABASE_MIGRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Table 'webhook_endpoints' defines 1 indexes for query performance."
+    },
+    {
+      "id": "MIG-003-TENANT-KEY-webhook_deliveries",
+      "name": "Tenancy Key & Isolation Constraints: webhook_deliveries",
+      "category": "DATABASE_MIGRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Table 'webhook_deliveries' has explicit tenant key 'organization_id' or cascading parent foreign key."
+    },
+    {
+      "id": "MIG-004-INDEXES-webhook_deliveries",
+      "name": "Index Coverage: webhook_deliveries",
+      "category": "DATABASE_MIGRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Table 'webhook_deliveries' defines 2 indexes for query performance."
+    },
+    {
+      "id": "MIG-003-TENANT-KEY-webhook_attempts",
+      "name": "Tenancy Key & Isolation Constraints: webhook_attempts",
+      "category": "DATABASE_MIGRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Table 'webhook_attempts' has explicit tenant key 'organization_id' or cascading parent foreign key."
+    },
+    {
+      "id": "MIG-004-INDEXES-webhook_attempts",
+      "name": "Index Coverage: webhook_attempts",
+      "category": "DATABASE_MIGRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Table 'webhook_attempts' defines 1 indexes for query performance."
+    },
+    {
+      "id": "POL-001-MANDATORY-POLICY",
+      "name": "Tenant-Scoped Endpoint Policy Enforcement",
+      "category": "AUTHORIZATION_POLICY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "All 1 controllers are backed by 1 Pundit authorization policies."
+    },
+    {
+      "id": "POL-002-SCOPE-WebhookEndpointPolicy",
+      "name": "Multi-Tenant Isolation Scope: WebhookEndpointPolicy",
+      "category": "AUTHORIZATION_POLICY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Policy 'WebhookEndpointPolicy' defines strict multi-tenant Scope resolution."
+    },
+    {
+      "id": "POL-003-CTRL-CHECK-Api::V1::Developer::WebhooksController",
+      "name": "Controller Pundit Invocations: Api::V1::Developer::WebhooksController",
+      "category": "AUTHORIZATION_POLICY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Controller 'Api::V1::Developer::WebhooksController' actively invokes Pundit policy checks (policy_scope / authorize)."
+    },
+    {
+      "id": "API-001-ROUTE-ACTION-MAPPING",
+      "name": "REST Route to Controller Action Mapping",
+      "category": "API_CONTRACT",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "All 7 routes map directly to defined controller actions."
+    },
+    {
+      "id": "API-002-CONTRACT-SCHEMAS",
+      "name": "API Request/Response Schema Contracts",
+      "category": "API_CONTRACT",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Verified 3 explicit API contract schemas with status codes."
+    },
+    {
+      "id": "TEST-001-MANDATORY-SUITE",
+      "name": "Mandatory Automated Test Plan Enforcement",
+      "category": "TEST_ORCHESTRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Verified 5 planned test suites covering models, requests, jobs, and security gates."
+    },
+    {
+      "id": "TEST-002-CROSS-TENANT-SPEC",
+      "name": "Cross-Tenant Isolation Test Coverage",
+      "category": "TEST_ORCHESTRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Dedicated cross-tenant isolation spec is planned to prove boundary enforcement."
+    },
+    {
+      "id": "TEST-003-MODEL-SPECS",
+      "name": "Domain Model Unit Specs",
+      "category": "TEST_ORCHESTRATION",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Model specs planned for associations, validations, and lifecycle callbacks."
+    },
+    {
+      "id": "SEC-VAL-001-SSRF",
+      "name": "SSRF Protection & Cloud Metadata Filter",
+      "category": "SECURITY_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Robust SSRF protection planned (blocks RFC 1918 subnets, IPv6 loopback, and 169.254.169.254 cloud metadata)."
+    },
+    {
+      "id": "SEC-VAL-002-SECRET-ENCRYPTION",
+      "name": "Cryptographic Secret Storage at Rest",
+      "category": "SECURITY_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Signing secrets encrypted at rest via ActiveRecord::Encryption."
+    },
+    {
+      "id": "SEC-VAL-003-HMAC-SIGNATURE",
+      "name": "HMAC-SHA256 Payload Signing & Replay Protection",
+      "category": "SECURITY_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "HMAC-SHA256 signature calculated over canonicalized 'timestamp.payload' structure."
+    },
+    {
+      "id": "SEC-VAL-004-TIMEOUT-Webhooks::DeliverPayloadJob",
+      "name": "HTTP Worker Timeout Strictness: Webhooks::DeliverPayloadJob",
+      "category": "SECURITY_INTEGRITY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Worker 'Webhooks::DeliverPayloadJob' configures strict HTTP execution timeout."
+    },
+    {
+      "id": "ROL-001-MIGRATION-ROLLBACK",
+      "name": "Migration Rollback Strategy & Contingency",
+      "category": "ROLLBACK_SAFETY",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Verified safe rollback strategy (MIGRATION_DOWN) with 2 contingency steps."
+    },
+    {
+      "id": "RAILS-001-FRAMEWORK",
+      "name": "Rails Backend Framework Detection",
+      "category": "RAILS_PROFILE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "Rails backend verified (6.5.1)"
+    },
+    {
+      "id": "RAILS-002-MODELS",
+      "name": "ActiveRecord Domain Models",
+      "category": "RAILS_PROFILE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "62 domain models discovered."
+    },
+    {
+      "id": "RAILS-003-CONTROLLERS",
+      "name": "ActionController Handlers",
+      "category": "RAILS_PROFILE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "77 controllers discovered."
+    },
+    {
+      "id": "NEXT-001-FRAMEWORK",
+      "name": "Next.js Frontend Detection",
+      "category": "NEXT_PROFILE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "No Next.js frontend required by repository architecture."
+    },
+    {
+      "id": "DOCKER-001-CONFIG",
+      "name": "Docker & Container Infrastructure",
+      "category": "DOCKER_PROFILE",
+      "status": "STATIC",
+      "verdict": "PASS",
+      "severity": "INFO",
+      "message": "No containerization infrastructure required by repository architecture."
+    }
+  ],
+  "evidence": [],
+  "failures": [],
+  "warnings": [],
+  "security_findings": [],
+  "commands_executed": [],
+  "commands_blocked": [],
+  "assumptions": [
+    "Repository revision is bound to execution context; any new commit invalidates this verification.",
+    "Verification was executed in VERIFY_ONLY mode without making filesystem mutations."
+  ],
+  "not_verified": [],
+  "coverage": {
+    "totalChecks": 54,
+    "passedChecks": 54,
+    "failedChecks": 0,
+    "warningChecks": 0,
+    "notVerifiedCount": 0
+  },
+  "change_surface": {
+    "files_to_create": [
+      "db/migrate/20260917235414_create_outgoing_webhooks_tables.rb",
+      "app/models/webhook_endpoint.rb",
+      "app/models/webhook_delivery.rb",
+      "app/models/webhook_attempt.rb",
+      "app/policies/webhook_endpoint_policy.rb",
+      "app/services/webhooks/dispatch_service.rb",
+      "app/services/webhooks/hmac_signer_service.rb",
+      "app/services/webhooks/ssrf_validator_service.rb",
+      "app/jobs/webhooks/deliver_payload_job.rb",
+      "app/controllers/api/v1/developer/webhooks_controller.rb",
+      "app/admin/webhook_endpoints.rb",
+      "app/admin/webhook_deliveries.rb",
+      "spec/models/webhook_endpoint_spec.rb",
+      "spec/requests/api/v1/developer/webhooks_spec.rb",
+      "spec/requests/api/v1/developer/webhooks_cross_tenant_spec.rb",
+      "spec/services/webhooks/ssrf_validator_service_spec.rb",
+      "spec/jobs/webhooks/deliver_payload_job_spec.rb"
+    ],
+    "files_to_modify": [],
+    "tables_affected": [
+      "webhook_endpoints",
+      "webhook_deliveries",
+      "webhook_attempts"
+    ],
+    "routes_affected": [
+      "config/routes.rb"
+    ],
+    "models_affected": [
+      "app/models/webhook_endpoint.rb",
+      "app/models/webhook_delivery.rb",
+      "app/models/webhook_attempt.rb"
+    ],
+    "policies_affected": [
+      "app/policies/webhook_endpoint_policy.rb"
+    ],
+    "jobs_affected": [
+      "app/jobs/webhooks/deliver_payload_job.rb"
+    ],
+    "frontend_affected": [],
+    "tests_affected": [
+      "spec/models/webhook_endpoint_spec.rb",
+      "spec/requests/api/v1/developer/webhooks_spec.rb",
+      "spec/requests/api/v1/developer/webhooks_cross_tenant_spec.rb",
+      "spec/services/webhooks/ssrf_validator_service_spec.rb",
+      "spec/jobs/webhooks/deliver_payload_job_spec.rb"
+    ],
+    "total_operations": 18
+  },
+  "blast_radius": {
+    "direct": [
+      "Model: Organization (receives association)",
+      "Controller: Api::V1::Developer::WebhooksController",
+      "Job: Webhooks::DeliverPayloadJob"
+    ],
+    "transitive": [
+      "TABLE: organizations"
+    ],
+    "critical": [
+      "Model: Organization (Core Tenancy Boundary)"
+    ],
+    "testsProtecting": [],
+    "impactedComponentsCount": 4
+  },
+  "approval_status": "AWAITING_HUMAN_APPROVAL"
+}

@@ -1,0 +1,25 @@
+schema_version: 1
+capability_id: entitlements
+name: Entitlements & Feature Flags
+category: BILLING
+severity: P1_MAJOR
+description: Gestão de privilégios de recursos por plano e overrides por tenant.
+reference_implementation: "LastSaaS Feature Flags"
+golden_stack_adaptation: "Rails 8 ActiveRecord (Entitlement) + Pundit Integration"
+
+requirements:
+  - id: ENT-001
+    title: Entitlements Model
+    description: Modelo Entitlement associado ao Plan com tipo de valor (boolean, integer).
+    type: MODEL
+    required: true
+  - id: ENT-002
+    title: Entitlement Checker Service
+    description: Serviço para resolução de privilégios e limites por organização.
+    type: SERVICE
+    required: true
+  - id: ENT-003
+    title: Authorization Policy Integration
+    description: Políticas Pundit protegendo features baseadas em entitlement ativo.
+    type: POLICY
+    required: true

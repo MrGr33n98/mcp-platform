@@ -1,0 +1,50 @@
+{
+  "files_to_create": [
+    "db/migrate/20260917235414_create_outgoing_webhooks_tables.rb",
+    "app/models/webhook_endpoint.rb",
+    "app/models/webhook_delivery.rb",
+    "app/models/webhook_attempt.rb",
+    "app/policies/webhook_endpoint_policy.rb",
+    "app/services/webhooks/dispatch_service.rb",
+    "app/services/webhooks/hmac_signer_service.rb",
+    "app/services/webhooks/ssrf_validator_service.rb",
+    "app/jobs/webhooks/deliver_payload_job.rb",
+    "app/controllers/api/v1/developer/webhooks_controller.rb",
+    "app/admin/webhook_endpoints.rb",
+    "app/admin/webhook_deliveries.rb",
+    "spec/models/webhook_endpoint_spec.rb",
+    "spec/requests/api/v1/developer/webhooks_spec.rb",
+    "spec/requests/api/v1/developer/webhooks_cross_tenant_spec.rb",
+    "spec/services/webhooks/ssrf_validator_service_spec.rb",
+    "spec/jobs/webhooks/deliver_payload_job_spec.rb"
+  ],
+  "files_to_modify": [],
+  "tables_affected": [
+    "webhook_endpoints",
+    "webhook_deliveries",
+    "webhook_attempts"
+  ],
+  "routes_affected": [
+    "config/routes.rb"
+  ],
+  "models_affected": [
+    "app/models/webhook_endpoint.rb",
+    "app/models/webhook_delivery.rb",
+    "app/models/webhook_attempt.rb"
+  ],
+  "policies_affected": [
+    "app/policies/webhook_endpoint_policy.rb"
+  ],
+  "jobs_affected": [
+    "app/jobs/webhooks/deliver_payload_job.rb"
+  ],
+  "frontend_affected": [],
+  "tests_affected": [
+    "spec/models/webhook_endpoint_spec.rb",
+    "spec/requests/api/v1/developer/webhooks_spec.rb",
+    "spec/requests/api/v1/developer/webhooks_cross_tenant_spec.rb",
+    "spec/services/webhooks/ssrf_validator_service_spec.rb",
+    "spec/jobs/webhooks/deliver_payload_job_spec.rb"
+  ],
+  "total_operations": 18
+}

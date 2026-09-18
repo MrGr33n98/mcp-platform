@@ -4,7 +4,7 @@ export const logLevels = ["debug", "info", "warn", "error"] as const;
 
 export type LogLevel = (typeof logLevels)[number];
 
-export interface LogFields {
+export interface LogFields extends Record<string, unknown> {
   readonly product?: string;
   readonly tool?: string;
   readonly requestId?: string;

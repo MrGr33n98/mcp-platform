@@ -142,6 +142,8 @@ describe("OEST adapter", () => {
     adapter.register(registry);
 
     expect(registry.list().map((tool) => tool.name)).toEqual([
+      "cancel_order",
+      "create_mission",
       "get_api_key_usage",
       "get_deliverable_summary",
       "get_mission",
@@ -149,16 +151,19 @@ describe("OEST adapter", () => {
       "get_operator_summary",
       "get_order_summary",
       "get_organization_summary",
-      "get_platform_info",
-    ].filter((name) => name !== "get_platform_info").concat([
       "get_quote_summary",
       "get_subscription_summary",
       "get_system_health",
       "get_usage_summary",
       "list_missions",
       "list_operators",
-    ]));
-    expect(registry.list().every((tool) => tool.readOnly)).toBe(true);
+      "publish_mission",
+      "update_order",
+    ]);
+    const readOnlyTools = registry.list().filter((t) => t.name.startsWith("get_") || t.name.startsWith("list_"));
+    expect(readOnlyTools.every((tool) => tool.readOnly)).toBe(true);
+    const mutationTools = registry.list().filter((t) => !t.name.startsWith("get_") && !t.name.startsWith("list_"));
+    expect(mutationTools.every((tool) => tool.readOnly === false)).toBe(true);
   });
 
   it("uses only the confirmed shared endpoint map", () => {
@@ -340,6 +345,127 @@ describe("OEST adapter", () => {
     });
   });
 
+  it("registers and executes operational mutation tools with correct risk classifications", async () => {
+    await withServer((request, response) => {
+      if (request.method === "POST" && request.url === "/api/v1/missions") {
+        respondJson(response, 201, {
+          data: {
+            id: 101,
+            title: "New Survey Mission",
+            status: "draft",
+            mission_type: "inspection",
+            area_hectares: 25.5,
+            version: 0,
+          },
+        });
+        return;
+      }
+      if (request.method === "POST" && request.url === "/api/v1/missions/101/publish") {
+        respondJson(response, 200, {
+          data: {
+            id: 101,
+            status: "published",
+            published_at: "2026-09-17T12:00:00Z",
+            matching_job_status: "queued",
+          },
+        });
+        return;
+      }
+      if (request.method === "PATCH" && request.url === "/api/v1/enterprise/orders/ord-55") {
+        respondJson(response, 200, {
+          data: {
+            id: "ord-55",
+            order_name: "Order Alpha",
+            status: "planning",
+            description: "Updated flight zone",
+          },
+        });
+        return;
+      }
+      if (request.method === "POST" && request.url === "/api/v1/enterprise/orders/ord-55/cancel") {
+        respondJson(response, 200, {
+          data: {
+            id: "ord-55",
+            order_name: "Order Alpha",
+            status: "cancelled",
+          },
+        });
+        return;
+      }
+      respondJson(response, 404, {});
+    }, async (server) => {
+      const adapter = createAdapter(server.baseUrl);
+
+      const createTool = adapter.tools.find((t) => t.name === "create_mission");
+      expect(createTool?.readOnly).toBe(false);
+      expect(createTool?.riskLevel).toBe("write");
+
+      const publishTool = adapter.tools.find((t) => t.name === "publish_mission");
+      expect(publishTool?.readOnly).toBe(false);
+      expect(publishTool?.riskLevel).toBe("write");
+
+      const updateOrderTool = adapter.tools.find((t) => t.name === "update_order");
+      expect(updateOrderTool?.readOnly).toBe(false);
+      expect(updateOrderTool?.riskLevel).toBe("write");
+
+      const cancelOrderTool = adapter.tools.find((t) => t.name === "cancel_order");
+      expect(cancelOrderTool?.readOnly).toBe(false);
+      expect(cancelOrderTool?.riskLevel).toBe("sensitive");
+
+      const created = await execute(adapter, "create_mission", {
+        project_id: "prj-1",
+        title: "New Survey Mission",
+      });
+      expect(created).toMatchObject({ status: "draft", title: "New Survey Mission" });
+
+      const published = await execute(adapter, "publish_mission", {
+        id: "101",
+      });
+      expect(published).toMatchObject({ status: "published" });
+      expect(String(published.id)).toBe("101");
+
+      const updated = await execute(adapter, "update_order", {
+        id: "ord-55",
+        description: "Updated flight zone",
+      });
+      expect(updated).toMatchObject({ id: "ord-55", description: "Updated flight zone" });
+
+      const cancelled = await execute(adapter, "cancel_order", {
+        id: "ord-55",
+        reason: "Weather conditions",
+      });
+      expect(cancelled).toMatchObject({ id: "ord-55", status: "cancelled" });
+    });
+  });
+
+  it("blocks strict schema violations and tenant injections on mutation tools", async () => {
+    const adapter = createAdapter("http://127.0.0.1:65530");
+
+    await expectMcpError(
+      execute(adapter, "create_mission", { project_id: "", title: "" }),
+      "INVALID_TOOL_INPUT",
+    );
+    await expectMcpError(
+      execute(adapter, "create_mission", {
+        project_id: "prj-1",
+        title: "Valid Title",
+        tenant_id: "injected-tenant",
+      }),
+      "INVALID_TOOL_INPUT",
+    );
+    await expectMcpError(
+      execute(adapter, "update_order", {
+        id: "ord-1",
+        organization_id: "injected-org",
+      }),
+      "INVALID_TOOL_INPUT",
+    );
+    await expectMcpError(
+      execute(adapter, "cancel_order", { id: "" }),
+      "INVALID_TOOL_INPUT",
+    );
+  });
+
   it("blocks an invalid upstream OEST response", async () => {
     await withServer((_request, response) => {
       respondJson(response, 200, { data: { id: 10, title: "Missing required mission fields" } });
@@ -350,4 +476,52 @@ describe("OEST adapter", () => {
       );
     });
   });
+
+  it("supports dry_run simulation preview without making network calls", async () => {
+    const adapter = createAdapter("http://127.0.0.1:65530");
+
+    const created = await execute(adapter, "create_mission", {
+      project_id: "prj-1",
+      title: "Dry Run Mission",
+      dry_run: true,
+    });
+    expect(created).toMatchObject({
+      title: "Dry Run Mission",
+      status: "draft_preview",
+      dry_run: true,
+    });
+
+    const published = await execute(adapter, "publish_mission", {
+      id: "m-123",
+      dry_run: true,
+    });
+    expect(published).toMatchObject({
+      id: "m-123",
+      status: "published_preview",
+      dry_run: true,
+    });
+
+    const updated = await execute(adapter, "update_order", {
+      id: "ord-1",
+      description: "Dry Run Description",
+      dry_run: true,
+    });
+    expect(updated).toMatchObject({
+      id: "ord-1",
+      status: "updated_preview",
+      dry_run: true,
+    });
+
+    const cancelled = await execute(adapter, "cancel_order", {
+      id: "ord-1",
+      reason: "Dry Run Cancel",
+      dry_run: true,
+    });
+    expect(cancelled).toMatchObject({
+      id: "ord-1",
+      status: "cancelled_preview",
+      dry_run: true,
+    });
+  });
 });
+

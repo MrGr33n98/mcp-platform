@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rails (8.0.5)
+    pg (1.5.6)
+    activerecord-postgis-adapter (9.0.1)
+    sidekiq (7.3.2)
+    pundit (2.3.1)
+    activeadmin (3.2.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  rails (~> 8.0.0)

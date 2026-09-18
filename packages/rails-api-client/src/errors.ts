@@ -57,6 +57,11 @@ const httpErrorMap: Readonly<
     message: "Rails API resource was not found.",
     retryable: false,
   },
+  409: {
+    code: "RAILS_API_CONFLICT",
+    message: "Rails API reported a state conflict.",
+    retryable: false,
+  },
   422: {
     code: "RAILS_API_UNPROCESSABLE",
     message: "Rails API could not process the request.",
@@ -68,3 +73,4 @@ const httpErrorMap: Readonly<
     retryable: true,
   },
 };
+

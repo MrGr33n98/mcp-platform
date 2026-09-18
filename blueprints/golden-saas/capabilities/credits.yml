@@ -1,0 +1,25 @@
+schema_version: 1
+capability_id: credits
+name: Credits & Prepaid Balance
+category: BILLING
+severity: P1_MAJOR
+description: Gestão de saldo pré-pago e débito com concorrência segura.
+reference_implementation: "LastSaaS Prepaid Wallet"
+golden_stack_adaptation: "Rails 8 ActiveRecord (CreditLedger, CreditTransaction) + Pessimistic Locking"
+
+requirements:
+  - id: CRED-001
+    title: Credit Ledger Model
+    description: Modelo CreditLedger com saldo atômico por organização.
+    type: MODEL
+    required: true
+  - id: CRED-002
+    title: Credit Engine Service
+    description: Serviço transacional de concessão e débito com chave de idempotência.
+    type: SERVICE
+    required: true
+  - id: CRED-003
+    title: Concurrency Safety Tests
+    description: Testes unitários com multithreading validando prevenção de race conditions.
+    type: TEST
+    required: true

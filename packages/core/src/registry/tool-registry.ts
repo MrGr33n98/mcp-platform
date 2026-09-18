@@ -90,10 +90,39 @@ export class ToolRegistry {
       });
     }
 
-    if (tool.readOnly !== true) {
+    if (typeof tool.readOnly !== "boolean") {
       throw new McpPlatformError({
-        code: "MUTATION_NOT_ALLOWED",
-        message: "Only read-only tools may be registered in V1.",
+        code: "INVALID_TOOL_READONLY",
+        message: "Tool readOnly flag must be a boolean.",
+      });
+    }
+
+    if (tool.riskLevel !== undefined) {
+      const validRiskLevels = ["read", "write", "sensitive", "destructive"];
+      if (!validRiskLevels.includes(tool.riskLevel)) {
+        throw new McpPlatformError({
+          code: "INVALID_TOOL_RISK_LEVEL",
+          message: "Tool risk level must be one of: read, write, sensitive, destructive.",
+        });
+      }
+
+      if (tool.readOnly && tool.riskLevel !== "read") {
+        throw new McpPlatformError({
+          code: "INVALID_TOOL_RISK_LEVEL",
+          message: "Read-only tools cannot have a mutation risk level.",
+        });
+      }
+
+      if (!tool.readOnly && tool.riskLevel === "read") {
+        throw new McpPlatformError({
+          code: "INVALID_TOOL_RISK_LEVEL",
+          message: "Mutation tools cannot have a read risk level.",
+        });
+      }
+    } else if (!tool.readOnly) {
+      throw new McpPlatformError({
+        code: "MUTATION_RISK_LEVEL_REQUIRED",
+        message: "Mutation tools must explicitly declare their riskLevel (write, sensitive, or destructive).",
       });
     }
 

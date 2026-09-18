@@ -1,0 +1,20 @@
+schema_version: 1
+capability_id: notifications
+name: Notifications & Dispatch
+category: OPERATIONS
+severity: P2_NORMAL
+description: Central de notificações multi-canal (In-App, Email, Webhooks).
+reference_implementation: "LastSaaS Novu/Resend"
+golden_stack_adaptation: "Rails 8 Noticed gem + ActionMailer + Sidekiq"
+
+requirements:
+  - id: NOTIF-001
+    title: Notification Model
+    description: Modelo Notification com recipient polimórfico e status de leitura.
+    type: MODEL
+    required: true
+  - id: NOTIF-002
+    title: Multi-Channel Delivery
+    description: Notificações com suporte a database e email condicionais.
+    type: SERVICE
+    required: true

@@ -1,7 +1,7 @@
 {
   "name": "mcp-platform",
   "version": "1.0.0",
-  "description": "Reusable, read-only MCP platform core.",
+  "description": "Golden SaaS Engineering Platform and Runtime MCP.",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -9,13 +9,15 @@
     "apps/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run build --workspace=@mcp-platform/shared-tools && npm run build --workspace=@mcp-platform/oest-adapter && npm run build --workspace=@mcp-platform/platform-smoke && npm run build --workspace=@mcp-platform/oest-mcp",
-    "typecheck": "npm run build --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run typecheck --workspace=@mcp-platform/rails-api-client && npm run build --workspace=@mcp-platform/shared-tools && npm run typecheck --workspace=@mcp-platform/shared-tools && npm run build --workspace=@mcp-platform/oest-adapter && npm run typecheck --workspace=@mcp-platform/oest-adapter && npm run typecheck --workspace=@mcp-platform/platform-smoke && npm run typecheck --workspace=@mcp-platform/oest-mcp",
-    "test": "npm run test --workspace=@mcp-platform/core && npm run test --workspace=@mcp-platform/rails-api-client && npm run test --workspace=@mcp-platform/shared-tools && npm run test --workspace=@mcp-platform/oest-adapter",
+    "build": "npm run build --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run build --workspace=@mcp-platform/shared-tools && npm run build --workspace=@mcp-platform/oest-adapter && npm run build --workspace=@mcp-platform/avalia-adapter && npm run build --workspace=@mcp-platform/repository-intelligence && npm run build --workspace=@mcp-platform/architecture-graph && npm run build --workspace=@mcp-platform/saas-gap-analyzer && npm run build --workspace=@mcp-platform/feature-engineering && npm run build --workspace=@mcp-platform/verification-engine && npm run build --workspace=@mcp-platform/apply-engine && npm run build --workspace=@mcp-platform/git-governance && npm run build --workspace=@mcp-platform/production-diagnostics && npm run build --workspace=@mcp-platform/safe-release && npm run build --workspace=@mcp-platform/platform-smoke && npm run build --workspace=@mcp-platform/oest-mcp && npm run build --workspace=@mcp-platform/avalia-mcp",
+    "typecheck": "npm run build --workspace=@mcp-platform/core && npm run typecheck --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run typecheck --workspace=@mcp-platform/rails-api-client && npm run build --workspace=@mcp-platform/shared-tools && npm run typecheck --workspace=@mcp-platform/shared-tools && npm run build --workspace=@mcp-platform/oest-adapter && npm run typecheck --workspace=@mcp-platform/oest-adapter && npm run build --workspace=@mcp-platform/avalia-adapter && npm run typecheck --workspace=@mcp-platform/avalia-adapter && npm run build --workspace=@mcp-platform/repository-intelligence && npm run typecheck --workspace=@mcp-platform/repository-intelligence && npm run build --workspace=@mcp-platform/architecture-graph && npm run typecheck --workspace=@mcp-platform/architecture-graph && npm run build --workspace=@mcp-platform/saas-gap-analyzer && npm run typecheck --workspace=@mcp-platform/saas-gap-analyzer && npm run build --workspace=@mcp-platform/feature-engineering && npm run typecheck --workspace=@mcp-platform/feature-engineering && npm run build --workspace=@mcp-platform/verification-engine && npm run typecheck --workspace=@mcp-platform/verification-engine && npm run build --workspace=@mcp-platform/apply-engine && npm run typecheck --workspace=@mcp-platform/apply-engine && npm run build --workspace=@mcp-platform/git-governance && npm run typecheck --workspace=@mcp-platform/git-governance && npm run build --workspace=@mcp-platform/production-diagnostics && npm run typecheck --workspace=@mcp-platform/production-diagnostics && npm run build --workspace=@mcp-platform/safe-release && npm run typecheck --workspace=@mcp-platform/safe-release && npm run typecheck --workspace=@mcp-platform/platform-smoke && npm run typecheck --workspace=@mcp-platform/oest-mcp && npm run typecheck --workspace=@mcp-platform/avalia-mcp",
+    "test": "npm run test --workspace=@mcp-platform/core && npm run test --workspace=@mcp-platform/rails-api-client && npm run test --workspace=@mcp-platform/shared-tools && npm run test --workspace=@mcp-platform/oest-adapter && npm run test --workspace=@mcp-platform/avalia-adapter && npm run test --workspace=@mcp-platform/repository-intelligence && npm run test --workspace=@mcp-platform/architecture-graph && npm run test --workspace=@mcp-platform/saas-gap-analyzer && npm run test --workspace=@mcp-platform/feature-engineering && npm run test --workspace=@mcp-platform/verification-engine && npm run test --workspace=@mcp-platform/apply-engine && npm run test --workspace=@mcp-platform/git-governance && npm run test --workspace=@mcp-platform/production-diagnostics && npm run test --workspace=@mcp-platform/safe-release",
     "dev:smoke": "npm run build --workspace=@mcp-platform/core && npm run dev --workspace=@mcp-platform/platform-smoke",
     "start:smoke": "npm run build && npm run start --workspace=@mcp-platform/platform-smoke",
     "dev:oest": "npm run build --workspace=@mcp-platform/core && npm run build --workspace=@mcp-platform/rails-api-client && npm run build --workspace=@mcp-platform/shared-tools && npm run build --workspace=@mcp-platform/oest-adapter && npm run dev --workspace=@mcp-platform/oest-mcp",
-    "start:oest": "npm run build && npm run start --workspace=@mcp-platform/oest-mcp"
+    "start:oest": "npm run build && npm run start --workspace=@mcp-platform/oest-mcp",
+    "dev:avalia": "npm run build && npm run dev --workspace=@mcp-platform/avalia-mcp",
+    "start:avalia": "npm run build && npm run start --workspace=@mcp-platform/avalia-mcp"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +26,7 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "@rolldown/binding-win32-x64-msvc": "^1.2.9",
     "@types/node": "^22.20.3",
     "tsx": "^4.23.13",
     "typescript": "^7.0.2",

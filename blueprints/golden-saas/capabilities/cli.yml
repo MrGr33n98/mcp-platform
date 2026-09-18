@@ -1,0 +1,15 @@
+schema_version: 1
+capability_id: cli
+name: Developer CLI
+category: DEVELOPER_PLATFORM
+severity: P3_MINOR
+description: Ferramental de linha de comando para automação e operações de engenharia.
+reference_implementation: "LastSaaS CLI"
+golden_stack_adaptation: "TypeScript/Node CLI + Rails Thor Tasks + MCP Stdio"
+
+requirements:
+  - id: CLI-001
+    title: CLI Command Structure
+    description: Comandos para autenticação, rotação de chaves e inspeção de recursos.
+    type: CONFIG
+    required: false

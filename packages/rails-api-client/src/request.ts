@@ -1,12 +1,36 @@
 import { McpPlatformError } from "@mcp-platform/core";
-import type { RailsApiQuery, RailsApiQueryValue, RailsApiResponseSchema } from "./schemas.js";
+import type {
+  RailsApiQuery,
+  RailsApiQueryValue,
+  RailsApiRequestSchema,
+  RailsApiResponseSchema,
+} from "./schemas.js";
+
 
 export interface RailsApiGetRequest<TResponse = unknown> {
   readonly path: string;
-  readonly query?: RailsApiQuery;
+  readonly query?: RailsApiQuery | undefined;
   readonly requestId: string;
-  readonly responseSchema?: RailsApiResponseSchema<TResponse>;
+  readonly responseSchema?: RailsApiResponseSchema<TResponse> | undefined;
 }
+
+export type RailsApiMutationMethod = "POST" | "PATCH" | "PUT" | "DELETE";
+
+export interface RailsApiMutationRequest<
+  TBody = unknown,
+  TResponse = unknown,
+> {
+  readonly path: string;
+  readonly method?: RailsApiMutationMethod | undefined;
+  readonly query?: RailsApiQuery | undefined;
+  readonly body?: TBody | undefined;
+  readonly requestId: string;
+  readonly idempotencyKey?: string | undefined;
+  readonly requestSchema?: RailsApiRequestSchema<TBody> | undefined;
+  readonly responseSchema?: RailsApiResponseSchema<TResponse> | undefined;
+}
+
+
 
 export function buildRelativeApiUrl(
   baseUrl: URL,

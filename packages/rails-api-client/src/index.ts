@@ -12,11 +12,18 @@ export type {
   ValidatedRailsApiClientConfig,
 } from "./config.js";
 export { createDefaultHeaders } from "./headers.js";
+export type { CreateHeadersOptions } from "./headers.js";
 export { buildRelativeApiUrl, serializeQuery } from "./request.js";
-export type { RailsApiGetRequest } from "./request.js";
+export type {
+  RailsApiGetRequest,
+  RailsApiMutationMethod,
+  RailsApiMutationRequest,
+} from "./request.js";
 export { isRetryableStatus, retryDelayMs } from "./retry.js";
 export type {
   RailsApiQuery,
   RailsApiQueryValue,
+  RailsApiRequestSchema,
   RailsApiResponseSchema,
 } from "./schemas.js";
+

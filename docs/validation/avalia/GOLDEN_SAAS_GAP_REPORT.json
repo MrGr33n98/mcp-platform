@@ -1,0 +1,1822 @@
+{
+  "generatedAt": "2026-09-17T23:09:56.990Z",
+  "repository": {
+    "path": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back",
+    "name": "AB0-1-back"
+  },
+  "validationStatus": "VALID",
+  "overallScore": 84,
+  "scoreBreakdown": {
+    "p0_security_tenancy": 100,
+    "p1_monetization_integrity": 50,
+    "p2_operations_observability": 100,
+    "p3_ux_branding": 90
+  },
+  "summary": {
+    "total": 11,
+    "pass": 9,
+    "partial": 1,
+    "missing": 1,
+    "fail": 0,
+    "not_verified": 0,
+    "not_applicable": 0
+  },
+  "audits": [
+    {
+      "capabilityId": "authentication",
+      "name": "Multi-Tenant Authentication & Identity",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\user.rb",
+        "Gemfile",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\admin\\sessions_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\auth_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\chat\\sessions_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\inbox\\sessions_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\sales\\tracking_sessions_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\sales\\user_roles_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\users_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\app\\sessions_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\confirmations_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\omniauth_callbacks_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\passwords_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\registrations_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\sessions_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\unlocks_controller.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\user.rb",
+          "symbol": "User",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model User defined in user.rb."
+        },
+        {
+          "file": "Gemfile",
+          "evidence_type": "DEPENDENCY",
+          "confidence": "HIGH",
+          "description": "Devise authentication gem present."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\admin\\sessions_controller.rb",
+          "symbol": "Admin::SessionsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller Admin::SessionsController with actions []."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\auth_controller.rb",
+          "symbol": "AuthController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller AuthController with actions [login, register, signup, logout, logout_all, refresh, me, forgot_password, reset_password, resend_confirmation, confirm_email, extract_token_from_header, extract_credentials, user_params, payload_for, serialized_user, issue_tokens_for, access_token_expires_at, refresh_token_expires_at, extract_refresh_token, user_status_code, revoke_refresh_token, revoke_token, skip_token_check, development_fallback]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\chat\\sessions_controller.rb",
+          "symbol": "SessionsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller SessionsController with actions [create, show, session_params, chat_enabled, realtime_token_for]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\inbox\\sessions_controller.rb",
+          "symbol": "SessionsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller SessionsController with actions [index, messages, activities, create_message, update_mode, mark_read, archive, handoff_whatsapp, require_live_inbox_feature, set_company, set_session, apply_cursor, apply_message_cursor, encode_cursor, decode_cursor, normalized_status, inbox_counts, serialize_session, serialize_message, serialize_activity, latest_messages_for]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\sales\\tracking_sessions_controller.rb",
+          "symbol": "TrackingSessionsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller TrackingSessionsController with actions [create, update, session_params]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\sales\\user_roles_controller.rb",
+          "symbol": "UserRolesController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller UserRolesController with actions [create, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\users_controller.rb",
+          "symbol": "Api::V1::UsersController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller Api::V1::UsersController with actions [me, me_companies, switch_company, index, show, create, update, destroy, set_user, user_params, avatar_upload_request, ensure_avatar_storage_configured, authorize_index, authorize_user_access, user_with_avatar]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\app\\sessions_controller.rb",
+          "symbol": "SessionsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller SessionsController with actions [new, create, destroy, redirect_if_signed_in]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\confirmations_controller.rb",
+          "symbol": "Users::ConfirmationsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller Users::ConfirmationsController with actions [new, create, show, after_resending_confirmation_instructions_path_for, after_confirmation_path_for]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\omniauth_callbacks_controller.rb",
+          "symbol": "Users::OmniauthCallbacksController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller Users::OmniauthCallbacksController with actions [skip_token_check, google_oauth2, linkedin, facebook, failure, frontend_url, handle_oauth, issue_oauth_tokens]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\passwords_controller.rb",
+          "symbol": "Users::PasswordsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller Users::PasswordsController with actions [new, create, edit, update, after_resetting_password_path_for, after_sending_reset_password_instructions_path_for]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\registrations_controller.rb",
+          "symbol": "Users::RegistrationsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller Users::RegistrationsController with actions [new, create, edit, update, destroy, cancel, configure_sign_up_params, configure_account_update_params, after_sign_up_path_for, after_inactive_sign_up_path_for]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\sessions_controller.rb",
+          "symbol": "Users::SessionsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller Users::SessionsController with actions [new, create, destroy, configure_sign_in_params]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\unlocks_controller.rb",
+          "symbol": "Users::UnlocksController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller Users::UnlocksController with actions [new, create, show, after_sending_unlock_instructions_path_for, after_unlock_path_for]."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "AUTH-001",
+          "title": "User Identity Model",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\user.rb",
+              "symbol": "User",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model User defined in user.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "User model found at C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\user.rb."
+        },
+        {
+          "requirementId": "AUTH-002",
+          "title": "Password Security & Hashing",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "Gemfile",
+              "evidence_type": "DEPENDENCY",
+              "confidence": "HIGH",
+              "description": "Devise authentication gem present."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Devise or password hashing mechanism verified."
+        },
+        {
+          "requirementId": "AUTH-003",
+          "title": "Session & Token Management",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\admin\\sessions_controller.rb",
+              "symbol": "Admin::SessionsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller Admin::SessionsController with actions []."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\auth_controller.rb",
+              "symbol": "AuthController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller AuthController with actions [login, register, signup, logout, logout_all, refresh, me, forgot_password, reset_password, resend_confirmation, confirm_email, extract_token_from_header, extract_credentials, user_params, payload_for, serialized_user, issue_tokens_for, access_token_expires_at, refresh_token_expires_at, extract_refresh_token, user_status_code, revoke_refresh_token, revoke_token, skip_token_check, development_fallback]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\chat\\sessions_controller.rb",
+              "symbol": "SessionsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller SessionsController with actions [create, show, session_params, chat_enabled, realtime_token_for]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\inbox\\sessions_controller.rb",
+              "symbol": "SessionsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller SessionsController with actions [index, messages, activities, create_message, update_mode, mark_read, archive, handoff_whatsapp, require_live_inbox_feature, set_company, set_session, apply_cursor, apply_message_cursor, encode_cursor, decode_cursor, normalized_status, inbox_counts, serialize_session, serialize_message, serialize_activity, latest_messages_for]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\sales\\tracking_sessions_controller.rb",
+              "symbol": "TrackingSessionsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller TrackingSessionsController with actions [create, update, session_params]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\sales\\user_roles_controller.rb",
+              "symbol": "UserRolesController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller UserRolesController with actions [create, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\api\\v1\\users_controller.rb",
+              "symbol": "Api::V1::UsersController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller Api::V1::UsersController with actions [me, me_companies, switch_company, index, show, create, update, destroy, set_user, user_params, avatar_upload_request, ensure_avatar_storage_configured, authorize_index, authorize_user_access, user_with_avatar]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\app\\sessions_controller.rb",
+              "symbol": "SessionsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller SessionsController with actions [new, create, destroy, redirect_if_signed_in]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\confirmations_controller.rb",
+              "symbol": "Users::ConfirmationsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller Users::ConfirmationsController with actions [new, create, show, after_resending_confirmation_instructions_path_for, after_confirmation_path_for]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\omniauth_callbacks_controller.rb",
+              "symbol": "Users::OmniauthCallbacksController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller Users::OmniauthCallbacksController with actions [skip_token_check, google_oauth2, linkedin, facebook, failure, frontend_url, handle_oauth, issue_oauth_tokens]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\passwords_controller.rb",
+              "symbol": "Users::PasswordsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller Users::PasswordsController with actions [new, create, edit, update, after_resetting_password_path_for, after_sending_reset_password_instructions_path_for]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\registrations_controller.rb",
+              "symbol": "Users::RegistrationsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller Users::RegistrationsController with actions [new, create, edit, update, destroy, cancel, configure_sign_up_params, configure_account_update_params, after_sign_up_path_for, after_inactive_sign_up_path_for]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\sessions_controller.rb",
+              "symbol": "Users::SessionsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller Users::SessionsController with actions [new, create, destroy, configure_sign_in_params]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\controllers\\users\\unlocks_controller.rb",
+              "symbol": "Users::UnlocksController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller Users::UnlocksController with actions [new, create, show, after_sending_unlock_instructions_path_for, after_unlock_path_for]."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Session/Auth controllers or JWT handling verified."
+        }
+      ],
+      "existingImplementation": "Authentication partially implemented (3/3 requirements)",
+      "missingPieces": [],
+      "securityGaps": [
+        "MFA / TOTP not detected in codebase"
+      ],
+      "testGaps": [
+        "Timing-safe login and password reset specs"
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityId": "tenancy",
+      "name": "Multi-Tenancy, Memberships & RBAC",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\account.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\activity.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\campaign_recipient.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\contact.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\contact_employment.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\email_message.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\email_thread.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\energy_profile.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\form_submission.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\intelligence_signal.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\note.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\opportunity.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\solar_project.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\task.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\tracking_event.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\tracking_session.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\company_member.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\active_admin\\page_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\billing_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\chat_lead_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\chat_session_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\comment_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_access_request_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_dashboard_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_faq_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_offer_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_partner_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_profile_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_material_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_project_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_lead_form_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_lead_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_report_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\dashboard_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\favorite_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\feed_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\financing_configuration_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\financing_option_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_membership_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_post_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_rule_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_topic_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\pending_change_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\reaction_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\reviewer_publication_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\review_form_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\review_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\audience_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\campaign_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\contact_import_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\contact_list_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\import_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\saved_item_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\social_follow_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\user_policy.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\account.rb",
+          "symbol": "Account",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Account defined in account.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\activity.rb",
+          "symbol": "Activity",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Activity defined in activity.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\campaign_recipient.rb",
+          "symbol": "CampaignRecipient",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model CampaignRecipient defined in campaign_recipient.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\contact.rb",
+          "symbol": "Contact",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Contact defined in contact.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\contact_employment.rb",
+          "symbol": "ContactEmployment",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model ContactEmployment defined in contact_employment.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\email_message.rb",
+          "symbol": "EmailMessage",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model EmailMessage defined in email_message.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\email_thread.rb",
+          "symbol": "EmailThread",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model EmailThread defined in email_thread.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\energy_profile.rb",
+          "symbol": "EnergyProfile",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model EnergyProfile defined in energy_profile.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\form_submission.rb",
+          "symbol": "FormSubmission",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model FormSubmission defined in form_submission.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\intelligence_signal.rb",
+          "symbol": "IntelligenceSignal",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model IntelligenceSignal defined in intelligence_signal.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\note.rb",
+          "symbol": "Note",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Note defined in note.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\opportunity.rb",
+          "symbol": "Opportunity",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Opportunity defined in opportunity.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\solar_project.rb",
+          "symbol": "SolarProject",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model SolarProject defined in solar_project.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\task.rb",
+          "symbol": "Task",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Task defined in task.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\tracking_event.rb",
+          "symbol": "TrackingEvent",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model TrackingEvent defined in tracking_event.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\tracking_session.rb",
+          "symbol": "TrackingSession",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model TrackingSession defined in tracking_session.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\company_member.rb",
+          "symbol": "CompanyMember",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model CompanyMember defined in company_member.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\active_admin\\page_policy.rb",
+          "symbol": "PagePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy PagePolicy protecting model Page with actions [show]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\billing_policy.rb",
+          "symbol": "BillingPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy BillingPolicy protecting model Billing with actions [show, checkout, portal, enterprise_lead, admin_or_member, admin, company_member_active, company_owner, company_editor]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\chat_lead_policy.rb",
+          "symbol": "ChatLeadPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ChatLeadPolicy protecting model ChatLead with actions [show, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\chat_session_policy.rb",
+          "symbol": "ChatSessionPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ChatSessionPolicy protecting model ChatSession with actions [show, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\comment_policy.rb",
+          "symbol": "CommentPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CommentPolicy protecting model Comment with actions [index, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_access_request_policy.rb",
+          "symbol": "CompanyAccessRequestPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyAccessRequestPolicy protecting model CompanyAccessRequest with actions [index, show, approve, reject]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_dashboard_policy.rb",
+          "symbol": "CompanyDashboardPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyDashboardPolicy protecting model CompanyDashboard with actions [show, view_analytics, view_analytics_timeseries, view_analytics_reputation, view_analytics_ranking, view_analytics_campaigns, view_trust_health, view_intent_summary, view_certification_progress, view_assets, view_stats, view_banner_subscriptions, update_info, add_categories, remove_category, update_ctas, update_logo, view_banners, update_banner, upload_media, add_video, remove_video, view_pending_changes, view_notifications, view_media, view_videos, view_social_proof_reviews, update_social_proof_review, view_social_proof_stats, admin_or_member, admin, company_member_active, company_owner, company_has_paid_plan]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_faq_policy.rb",
+          "symbol": "CompanyFaqPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyFaqPolicy protecting model CompanyFaq with actions [index, show, create, update, destroy, reorder, admin, company_scope]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_offer_policy.rb",
+          "symbol": "CompanyFinancingOfferPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyFinancingOfferPolicy protecting model CompanyFinancingOffer with actions [index, create, update, destroy, reorder, admin, allowed]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_partner_policy.rb",
+          "symbol": "CompanyFinancingPartnerPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyFinancingPartnerPolicy protecting model CompanyFinancingPartner with actions [index, create, update, destroy, reorder, admin, allowed]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_profile_policy.rb",
+          "symbol": "CompanyFinancingProfilePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyFinancingProfilePolicy protecting model CompanyFinancingProfile with actions [show, create, update, destroy, admin, allowed]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_material_policy.rb",
+          "symbol": "CompanyMaterialPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyMaterialPolicy protecting model CompanyMaterial with actions [index, show, create, update, destroy, approve, reject, request_changes, submit, restore]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_policy.rb",
+          "symbol": "CompanyPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyPolicy protecting model Company with actions [index, show, feature_access, update, edit, create, destroy, approve, reject, suspend, materials, view_dashboard, view_analytics, view_premium_metrics, view_leads, edit_company, edit_categories, edit_reviews, upload_media, manage_pricing, has_company_access_for_scope, company_owner, company_member, has_company_access, company_user, owns_record]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_project_policy.rb",
+          "symbol": "CompanyProjectPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CompanyProjectPolicy protecting model CompanyProject with actions [index, show, create, update, destroy, submit]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_lead_form_policy.rb",
+          "symbol": "ContentLeadFormPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ContentLeadFormPolicy protecting model ContentLeadForm with actions [index, show, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_lead_policy.rb",
+          "symbol": "ContentLeadPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ContentLeadPolicy protecting model ContentLead with actions [index, show, export]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_report_policy.rb",
+          "symbol": "ContentReportPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ContentReportPolicy protecting model ContentReport with actions [index, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\dashboard_policy.rb",
+          "symbol": "DashboardPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy DashboardPolicy protecting model Dashboard with actions [stats, charts, activity, export, admin_or_review, company_owner]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\favorite_policy.rb",
+          "symbol": "FavoritePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy FavoritePolicy protecting model Favorite with actions [index, create, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\feed_policy.rb",
+          "symbol": "FeedPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy FeedPolicy protecting model Feed with actions [index]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\financing_configuration_policy.rb",
+          "symbol": "FinancingConfigurationPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy FinancingConfigurationPolicy protecting model FinancingConfiguration with actions [index, show, create, update, destroy, import_json, process_import_json, reset_defaults]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\financing_option_policy.rb",
+          "symbol": "FinancingOptionPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy FinancingOptionPolicy protecting model FinancingOption with actions [index, show, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_membership_policy.rb",
+          "symbol": "GroupMembershipPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy GroupMembershipPolicy protecting model GroupMembership with actions [show, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_policy.rb",
+          "symbol": "GroupPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy GroupPolicy protecting model Group with actions [index, show, create, update, destroy, join, leave, invite, manage_members, create_post, moderate, admin, active_membership, owner_or_admin, moderator_role, member_role]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_post_policy.rb",
+          "symbol": "GroupPostPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy GroupPostPolicy protecting model GroupPost with actions [show, create, update, destroy, moderate, hide, restore, pin, unpin, close_comments, open_comments, author, active_membership, can_moderate]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_rule_policy.rb",
+          "symbol": "GroupRulePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy GroupRulePolicy protecting model GroupRule with actions [index, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_topic_policy.rb",
+          "symbol": "GroupTopicPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy GroupTopicPolicy protecting model GroupTopic with actions [index, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\pending_change_policy.rb",
+          "symbol": "PendingChangePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy PendingChangePolicy protecting model PendingChange with actions [approve, reject]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\reaction_policy.rb",
+          "symbol": "ReactionPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ReactionPolicy protecting model Reaction with actions [create, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\reviewer_publication_policy.rb",
+          "symbol": "ReviewerPublicationPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ReviewerPublicationPolicy protecting model ReviewerPublication with actions [show, owner]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\review_form_policy.rb",
+          "symbol": "ReviewFormPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ReviewFormPolicy protecting model ReviewForm with actions [index, show, create, update, destroy, duplicate]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\review_policy.rb",
+          "symbol": "ReviewPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ReviewPolicy protecting model Review with actions [index, show, update, approve, company_reviewer]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\audience_policy.rb",
+          "symbol": "AudiencePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy AudiencePolicy protecting model Audience with actions [index, create, show]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\campaign_policy.rb",
+          "symbol": "CampaignPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CampaignPolicy protecting model Campaign with actions [index, show, create, update, destroy, dispatch, launch, pause, resume, cancel, retry, retry_failed, snapshot, schedule, preflight, analytics, recipients, activity, user_belongs_to_tenant]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\contact_import_policy.rb",
+          "symbol": "ContactImportPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ContactImportPolicy protecting model ContactImport with actions [index, show, create, mapping, commit, cancel, user_belongs_to_tenant]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\contact_list_policy.rb",
+          "symbol": "ContactListPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ContactListPolicy protecting model ContactList with actions [index, show, create, update, destroy, add_contacts, remove_contacts, user_belongs_to_tenant]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\import_policy.rb",
+          "symbol": "ImportPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ImportPolicy protecting model Import with actions [index, show, create, analyze, mapping, validate, commit, rows, errors_csv, cancel, user_belongs_to_tenant]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\saved_item_policy.rb",
+          "symbol": "SavedItemPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy SavedItemPolicy protecting model SavedItem with actions [index, create, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\social_follow_policy.rb",
+          "symbol": "SocialFollowPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy SocialFollowPolicy protecting model SocialFollow with actions [index, create, destroy, owner]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\user_policy.rb",
+          "symbol": "UserPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy UserPolicy protecting model User with actions [index, show, create, update, destroy, approve, reject]."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "TEN-001",
+          "title": "Root Tenant Domain Model",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\account.rb",
+              "symbol": "Account",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Account defined in account.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Tenant model Account found at C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\account.rb."
+        },
+        {
+          "requirementId": "TEN-002",
+          "title": "ActiveRecord Tenant Scoping",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\activity.rb",
+              "symbol": "Activity",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Activity defined in activity.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\campaign_recipient.rb",
+              "symbol": "CampaignRecipient",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model CampaignRecipient defined in campaign_recipient.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\contact.rb",
+              "symbol": "Contact",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Contact defined in contact.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\contact_employment.rb",
+              "symbol": "ContactEmployment",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model ContactEmployment defined in contact_employment.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\email_message.rb",
+              "symbol": "EmailMessage",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model EmailMessage defined in email_message.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\email_thread.rb",
+              "symbol": "EmailThread",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model EmailThread defined in email_thread.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\energy_profile.rb",
+              "symbol": "EnergyProfile",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model EnergyProfile defined in energy_profile.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\form_submission.rb",
+              "symbol": "FormSubmission",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model FormSubmission defined in form_submission.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\intelligence_signal.rb",
+              "symbol": "IntelligenceSignal",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model IntelligenceSignal defined in intelligence_signal.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\note.rb",
+              "symbol": "Note",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Note defined in note.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\opportunity.rb",
+              "symbol": "Opportunity",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Opportunity defined in opportunity.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\solar_project.rb",
+              "symbol": "SolarProject",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model SolarProject defined in solar_project.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\task.rb",
+              "symbol": "Task",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Task defined in task.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\tracking_event.rb",
+              "symbol": "TrackingEvent",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model TrackingEvent defined in tracking_event.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\tracking_session.rb",
+              "symbol": "TrackingSession",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model TrackingSession defined in tracking_session.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "15 domain models scoped with tenant associations."
+        },
+        {
+          "requirementId": "TEN-003",
+          "title": "Membership Association Model",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\company_member.rb",
+              "symbol": "CompanyMember",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model CompanyMember defined in company_member.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Membership model CompanyMember found at C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\company_member.rb."
+        },
+        {
+          "requirementId": "TEN-004",
+          "title": "Pundit Authorization Policies",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\active_admin\\page_policy.rb",
+              "symbol": "PagePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy PagePolicy protecting model Page with actions [show]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\billing_policy.rb",
+              "symbol": "BillingPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy BillingPolicy protecting model Billing with actions [show, checkout, portal, enterprise_lead, admin_or_member, admin, company_member_active, company_owner, company_editor]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\chat_lead_policy.rb",
+              "symbol": "ChatLeadPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ChatLeadPolicy protecting model ChatLead with actions [show, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\chat_session_policy.rb",
+              "symbol": "ChatSessionPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ChatSessionPolicy protecting model ChatSession with actions [show, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\comment_policy.rb",
+              "symbol": "CommentPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CommentPolicy protecting model Comment with actions [index, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_access_request_policy.rb",
+              "symbol": "CompanyAccessRequestPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyAccessRequestPolicy protecting model CompanyAccessRequest with actions [index, show, approve, reject]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_dashboard_policy.rb",
+              "symbol": "CompanyDashboardPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyDashboardPolicy protecting model CompanyDashboard with actions [show, view_analytics, view_analytics_timeseries, view_analytics_reputation, view_analytics_ranking, view_analytics_campaigns, view_trust_health, view_intent_summary, view_certification_progress, view_assets, view_stats, view_banner_subscriptions, update_info, add_categories, remove_category, update_ctas, update_logo, view_banners, update_banner, upload_media, add_video, remove_video, view_pending_changes, view_notifications, view_media, view_videos, view_social_proof_reviews, update_social_proof_review, view_social_proof_stats, admin_or_member, admin, company_member_active, company_owner, company_has_paid_plan]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_faq_policy.rb",
+              "symbol": "CompanyFaqPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyFaqPolicy protecting model CompanyFaq with actions [index, show, create, update, destroy, reorder, admin, company_scope]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_offer_policy.rb",
+              "symbol": "CompanyFinancingOfferPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyFinancingOfferPolicy protecting model CompanyFinancingOffer with actions [index, create, update, destroy, reorder, admin, allowed]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_partner_policy.rb",
+              "symbol": "CompanyFinancingPartnerPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyFinancingPartnerPolicy protecting model CompanyFinancingPartner with actions [index, create, update, destroy, reorder, admin, allowed]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_financing_profile_policy.rb",
+              "symbol": "CompanyFinancingProfilePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyFinancingProfilePolicy protecting model CompanyFinancingProfile with actions [show, create, update, destroy, admin, allowed]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_material_policy.rb",
+              "symbol": "CompanyMaterialPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyMaterialPolicy protecting model CompanyMaterial with actions [index, show, create, update, destroy, approve, reject, request_changes, submit, restore]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_policy.rb",
+              "symbol": "CompanyPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyPolicy protecting model Company with actions [index, show, feature_access, update, edit, create, destroy, approve, reject, suspend, materials, view_dashboard, view_analytics, view_premium_metrics, view_leads, edit_company, edit_categories, edit_reviews, upload_media, manage_pricing, has_company_access_for_scope, company_owner, company_member, has_company_access, company_user, owns_record]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\company_project_policy.rb",
+              "symbol": "CompanyProjectPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CompanyProjectPolicy protecting model CompanyProject with actions [index, show, create, update, destroy, submit]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_lead_form_policy.rb",
+              "symbol": "ContentLeadFormPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ContentLeadFormPolicy protecting model ContentLeadForm with actions [index, show, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_lead_policy.rb",
+              "symbol": "ContentLeadPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ContentLeadPolicy protecting model ContentLead with actions [index, show, export]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\content_report_policy.rb",
+              "symbol": "ContentReportPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ContentReportPolicy protecting model ContentReport with actions [index, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\dashboard_policy.rb",
+              "symbol": "DashboardPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy DashboardPolicy protecting model Dashboard with actions [stats, charts, activity, export, admin_or_review, company_owner]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\favorite_policy.rb",
+              "symbol": "FavoritePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy FavoritePolicy protecting model Favorite with actions [index, create, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\feed_policy.rb",
+              "symbol": "FeedPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy FeedPolicy protecting model Feed with actions [index]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\financing_configuration_policy.rb",
+              "symbol": "FinancingConfigurationPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy FinancingConfigurationPolicy protecting model FinancingConfiguration with actions [index, show, create, update, destroy, import_json, process_import_json, reset_defaults]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\financing_option_policy.rb",
+              "symbol": "FinancingOptionPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy FinancingOptionPolicy protecting model FinancingOption with actions [index, show, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_membership_policy.rb",
+              "symbol": "GroupMembershipPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy GroupMembershipPolicy protecting model GroupMembership with actions [show, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_policy.rb",
+              "symbol": "GroupPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy GroupPolicy protecting model Group with actions [index, show, create, update, destroy, join, leave, invite, manage_members, create_post, moderate, admin, active_membership, owner_or_admin, moderator_role, member_role]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_post_policy.rb",
+              "symbol": "GroupPostPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy GroupPostPolicy protecting model GroupPost with actions [show, create, update, destroy, moderate, hide, restore, pin, unpin, close_comments, open_comments, author, active_membership, can_moderate]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_rule_policy.rb",
+              "symbol": "GroupRulePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy GroupRulePolicy protecting model GroupRule with actions [index, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\group_topic_policy.rb",
+              "symbol": "GroupTopicPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy GroupTopicPolicy protecting model GroupTopic with actions [index, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\pending_change_policy.rb",
+              "symbol": "PendingChangePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy PendingChangePolicy protecting model PendingChange with actions [approve, reject]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\reaction_policy.rb",
+              "symbol": "ReactionPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ReactionPolicy protecting model Reaction with actions [create, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\reviewer_publication_policy.rb",
+              "symbol": "ReviewerPublicationPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ReviewerPublicationPolicy protecting model ReviewerPublication with actions [show, owner]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\review_form_policy.rb",
+              "symbol": "ReviewFormPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ReviewFormPolicy protecting model ReviewForm with actions [index, show, create, update, destroy, duplicate]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\review_policy.rb",
+              "symbol": "ReviewPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ReviewPolicy protecting model Review with actions [index, show, update, approve, company_reviewer]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\audience_policy.rb",
+              "symbol": "AudiencePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy AudiencePolicy protecting model Audience with actions [index, create, show]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\campaign_policy.rb",
+              "symbol": "CampaignPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CampaignPolicy protecting model Campaign with actions [index, show, create, update, destroy, dispatch, launch, pause, resume, cancel, retry, retry_failed, snapshot, schedule, preflight, analytics, recipients, activity, user_belongs_to_tenant]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\contact_import_policy.rb",
+              "symbol": "ContactImportPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ContactImportPolicy protecting model ContactImport with actions [index, show, create, mapping, commit, cancel, user_belongs_to_tenant]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\contact_list_policy.rb",
+              "symbol": "ContactListPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ContactListPolicy protecting model ContactList with actions [index, show, create, update, destroy, add_contacts, remove_contacts, user_belongs_to_tenant]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\sales\\import_policy.rb",
+              "symbol": "ImportPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ImportPolicy protecting model Import with actions [index, show, create, analyze, mapping, validate, commit, rows, errors_csv, cancel, user_belongs_to_tenant]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\saved_item_policy.rb",
+              "symbol": "SavedItemPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy SavedItemPolicy protecting model SavedItem with actions [index, create, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\social_follow_policy.rb",
+              "symbol": "SocialFollowPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy SocialFollowPolicy protecting model SocialFollow with actions [index, create, destroy, owner]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\policies\\user_policy.rb",
+              "symbol": "UserPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy UserPolicy protecting model User with actions [index, show, create, update, destroy, approve, reject]."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "40 Pundit policies enforcing authorization boundaries."
+        }
+      ],
+      "existingImplementation": "Tenancy verified (4/4 requirements)",
+      "missingPieces": [],
+      "securityGaps": [],
+      "testGaps": [
+        "Cross-tenant isolation request specs"
+      ],
+      "dependencies": [
+        "authentication"
+      ]
+    },
+    {
+      "capabilityId": "billing",
+      "name": "SaaS Billing, Subscriptions & Monetization",
+      "status": "PARTIAL",
+      "priority": "P1",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\banner_addon_subscription.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\banner_addon_subscription.rb",
+          "symbol": "BannerAddonSubscription",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model BannerAddonSubscription defined in banner_addon_subscription.rb."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "BILL-001",
+          "title": "Subscription & Plan Models",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\banner_addon_subscription.rb",
+              "symbol": "BannerAddonSubscription",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model BannerAddonSubscription defined in banner_addon_subscription.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Subscription model BannerAddonSubscription found at C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\banner_addon_subscription.rb."
+        },
+        {
+          "requirementId": "BILL-002",
+          "title": "Stripe Webhook Handler",
+          "severity": "P1_MAJOR",
+          "status": "MISSING",
+          "evidence": [],
+          "confidence": "HIGH",
+          "explanation": "No Stripe webhook controller found."
+        }
+      ],
+      "existingImplementation": "Billing partially implemented (1/2 requirements)",
+      "missingPieces": [
+        "Stripe Webhook Handler"
+      ],
+      "securityGaps": [
+        "Stripe webhook signature validation verification required"
+      ],
+      "testGaps": [
+        "Webhook replay protection tests"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "api_keys",
+      "name": "Programmatic API Keys",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\api_key.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\api_key.rb",
+          "symbol": "ApiKey",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model ApiKey defined in api_key.rb."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "KEY-001",
+          "title": "ApiKey Model & Storage",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\api_key.rb",
+              "symbol": "ApiKey",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model ApiKey defined in api_key.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "ApiKey model ApiKey found at C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\api_key.rb."
+        }
+      ],
+      "existingImplementation": "ApiKey model with SHA-256 storage verified",
+      "missingPieces": [],
+      "securityGaps": [
+        "Ensure raw keys are never stored in plain text"
+      ],
+      "testGaps": [
+        "Scope enforcement request specs"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "webhooks",
+      "name": "Outgoing Webhooks",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\company_webhook.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\company_webhook.rb",
+          "symbol": "CompanyWebhook",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model CompanyWebhook defined in company_webhook.rb."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "WHK-001",
+          "title": "WebhookEndpoint Model",
+          "severity": "P2_NORMAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\company_webhook.rb",
+              "symbol": "CompanyWebhook",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model CompanyWebhook defined in company_webhook.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Webhook model CompanyWebhook found at C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\company_webhook.rb."
+        }
+      ],
+      "existingImplementation": "Webhook models detected",
+      "missingPieces": [],
+      "securityGaps": [
+        "SSRF protection on webhook destination URLs"
+      ],
+      "testGaps": [
+        "HMAC signature verification spec"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "admin",
+      "name": "Operations & Backoffice Control",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "app/admin"
+      ],
+      "evidence": [
+        {
+          "file": "app/admin",
+          "evidence_type": "ADMIN_RESOURCE",
+          "confidence": "HIGH",
+          "description": "ActiveAdmin with 80 resources."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "ADM-001",
+          "title": "ActiveAdmin Backoffice Setup",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "app/admin",
+              "evidence_type": "ADMIN_RESOURCE",
+              "confidence": "HIGH",
+              "description": "ActiveAdmin with 80 resources."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "ActiveAdmin configured with 80 resources."
+        }
+      ],
+      "existingImplementation": "ActiveAdmin with 80 resources",
+      "missingPieces": [],
+      "securityGaps": [
+        "Admin authentication and role authorization"
+      ],
+      "testGaps": [
+        "Admin authorization specs"
+      ],
+      "dependencies": [
+        "authentication"
+      ]
+    },
+    {
+      "capabilityId": "audit",
+      "name": "Immutable Security Audit Trails",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\banner_audit_log.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\banner_audit_log.rb",
+          "symbol": "BannerAuditLog",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model BannerAuditLog defined in banner_audit_log.rb."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "AUD-001",
+          "title": "Audit Log Model",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\banner_audit_log.rb",
+              "symbol": "BannerAuditLog",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model BannerAuditLog defined in banner_audit_log.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Audit model BannerAuditLog found at C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\banner_audit_log.rb."
+        }
+      ],
+      "existingImplementation": "Audit model present",
+      "missingPieces": [],
+      "securityGaps": [
+        "Enforce database immutability"
+      ],
+      "testGaps": [
+        "Audit metadata PII redaction specs"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "telemetry",
+      "name": "Product Analytics & SaaS KPIs",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\campaign_daily_metric.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\campaign_daily_metric.rb",
+          "symbol": "CampaignDailyMetric",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model CampaignDailyMetric defined in campaign_daily_metric.rb."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "TEL-001",
+          "title": "Telemetry Event Ingestion",
+          "severity": "P2_NORMAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\campaign_daily_metric.rb",
+              "symbol": "CampaignDailyMetric",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model CampaignDailyMetric defined in campaign_daily_metric.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Telemetry model CampaignDailyMetric found at C:\\Users\\Bobi\\Desktop\\AB0-1-main\\AB0-1-back\\app\\models\\sales\\campaign_daily_metric.rb."
+        }
+      ],
+      "existingImplementation": "Telemetry models present",
+      "missingPieces": [],
+      "securityGaps": [
+        "GDPR/LGPD IP anonymization"
+      ],
+      "testGaps": [
+        "Daily rollup verification specs"
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityId": "health",
+      "name": "Health Monitoring & Node Observability",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "config/routes.rb"
+      ],
+      "evidence": [
+        {
+          "file": "config/routes.rb",
+          "evidence_type": "ROUTE",
+          "confidence": "HIGH",
+          "description": "Found /up or /health route."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "HLT-001",
+          "title": "Liveness & Health Probe",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "config/routes.rb",
+              "evidence_type": "ROUTE",
+              "confidence": "HIGH",
+              "description": "Found /up or /health route."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Healthcheck probe route verified."
+        }
+      ],
+      "existingImplementation": "Liveness health endpoint present",
+      "missingPieces": [],
+      "securityGaps": [
+        "Ensure credentials never leak in health payload"
+      ],
+      "testGaps": [
+        "Dependency timeout probe test"
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityId": "branding",
+      "name": "White-Labeling & Visual Theming",
+      "status": "MISSING",
+      "priority": "P3",
+      "evidencePaths": [],
+      "evidence": [],
+      "requirements": [
+        {
+          "requirementId": "BRD-001",
+          "title": "Tenant Branding Model",
+          "severity": "P3_MINOR",
+          "status": "MISSING",
+          "evidence": [],
+          "confidence": "HIGH",
+          "explanation": "No Branding customization models found."
+        }
+      ],
+      "existingImplementation": "None",
+      "missingPieces": [
+        "Tenant Branding Model"
+      ],
+      "securityGaps": [
+        "Sanitize user CSS/HTML"
+      ],
+      "testGaps": [
+        "Anti-XSS injection spec"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "mcp",
+      "name": "Model Context Protocol & Agentic Integration",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "@mcp-platform/core",
+        "@mcp-platform/shared-tools"
+      ],
+      "evidence": [
+        {
+          "file": "packages/core",
+          "evidence_type": "CODE_SYMBOL",
+          "confidence": "HIGH",
+          "description": "@mcp-platform/core registry."
+        },
+        {
+          "file": "packages/shared-tools",
+          "evidence_type": "API_CONTRACT",
+          "confidence": "HIGH",
+          "description": "Zod tool schema definitions."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "MCP-001",
+          "title": "Core Registry & Transport",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "packages/core",
+              "evidence_type": "CODE_SYMBOL",
+              "confidence": "HIGH",
+              "description": "@mcp-platform/core registry."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "MCP Core registry and HTTP transport verified."
+        },
+        {
+          "requirementId": "MCP-002",
+          "title": "Zod Schema & Error Contracts",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "packages/shared-tools",
+              "evidence_type": "API_CONTRACT",
+              "confidence": "HIGH",
+              "description": "Zod tool schema definitions."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Zod schemas and error normalization contracts verified."
+        }
+      ],
+      "existingImplementation": "MCP Platform with Core Registry, Rate Limiting, ProposalEngine (HITL), Zod validation, and Rails API adapters",
+      "missingPieces": [],
+      "securityGaps": [],
+      "testGaps": [],
+      "dependencies": [
+        "api_keys",
+        "tenancy"
+      ]
+    }
+  ]
+}

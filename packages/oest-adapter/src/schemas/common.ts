@@ -7,7 +7,7 @@ export const timestampSchema = z.string().datetime({ offset: true });
 export const nullableTimestampSchema = timestampSchema.nullable();
 export const safeStringSchema = z.string().trim().min(1).max(4_000);
 export const nullableSafeStringSchema = safeStringSchema.nullable();
-export const nonNegativeNumberSchema = z.number().finite().nonnegative();
+export const nonNegativeNumberSchema = z.coerce.number().finite().nonnegative();
 
 export function asId(value: z.output<typeof identifierSchema>): string {
   return String(value);

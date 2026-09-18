@@ -1,0 +1,81 @@
+schema_version: 1
+
+capability:
+  id: billing
+  name: SaaS Billing, Subscriptions & Monetization
+  category: BILLING
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - Plan
+    - Subscription
+    - CreditBalance
+    - CreditTransaction
+    - BillingTransaction
+    - CreditBundle
+
+  security:
+    tenant_scoped: true
+    webhook_hmac_verified: true
+    idempotent_webhooks: true
+    server_side_entitlements: true
+    row_locked_deductions: true
+
+  backend:
+    models:
+      - Plan
+      - Subscription
+      - CreditBalance
+      - CreditTransaction
+      - BillingTransaction
+      - CreditBundle
+    controllers:
+      - BillingController
+      - StripeWebhooksController
+    policies:
+      - SubscriptionPolicy
+      - BillingPolicy
+    jobs:
+      - ProcessStripeWebhookJob
+      - ResetMonthlySubscriptionCreditsJob
+      - SyncStripeInvoicesJob
+
+  api:
+    endpoints:
+      - method: GET
+        path: /api/v1/billing/subscription
+      - method: POST
+        path: /api/v1/billing/checkout_session
+      - method: POST
+        path: /api/v1/billing/portal_session
+      - method: GET
+        path: /api/v1/billing/credits
+      - method: POST
+        path: /api/v1/billing/credit_bundles/:id/purchase
+      - method: GET
+        path: /api/v1/billing/transactions
+      - method: POST
+        path: /api/v1/webhooks/stripe
+
+  admin:
+    required: true
+    resources:
+      - Plan
+      - Subscription
+      - BillingTransaction
+      - CreditBundle
+
+  customer_frontend:
+    required: true
+    pages:
+      - /pricing
+      - /settings/billing
+
+  tests:
+    model: true
+    request: true
+    service: true
+    webhook_signature: true
+    concurrency_safe: true
+    cross_tenant: true

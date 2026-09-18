@@ -1,0 +1,43 @@
+schema_version: 1
+
+capability:
+  id: health
+  name: Health Monitoring & Node Observability
+  category: OBSERVABILITY
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - NodeRegistration
+    - HealthMetricSnapshot
+
+  security:
+    no_credential_leakage: true
+    safe_probe_timeouts: true
+
+  backend:
+    models:
+      - NodeRegistration
+      - HealthMetricSnapshot
+    jobs:
+      - NodeHeartbeatJob
+      - SweepStaleNodesJob
+
+  api:
+    endpoints:
+      - method: GET
+        path: /up
+      - method: GET
+        path: /api/admin/health/current
+      - method: GET
+        path: /api/admin/health/nodes
+      - method: GET
+        path: /api/admin/health/integrations
+
+  admin:
+    required: true
+    resource: HealthDashboard
+
+  tests:
+    service: true
+    timeout: true

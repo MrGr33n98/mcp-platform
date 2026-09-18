@@ -1,0 +1,203 @@
+{
+  "schema_version": 1,
+  "mode": "PLAN_ONLY",
+  "product": "oest",
+  "capability": "webhooks",
+  "operations": [
+    {
+      "id": "OP-001-MIGRATION",
+      "type": "RUN_MIGRATION",
+      "path": "db/migrate/20260917233017_create_outgoing_webhooks_tables.rb",
+      "description": "Create database tables for Outgoing Webhooks (webhook_endpoints, webhook_deliveries, webhook_attempts)",
+      "patternApplied": "Rails Migration [7.0]",
+      "codePreview": "# frozen_string_literal: true\n\nclass CreateOutgoingWebhooksTables < ActiveRecord::Migration[7.0]\n  def change\n    create_table :webhook_endpoints, id: :uuid do |t|\n      t.references :organization, null: false, foreign_key: true, type: :uuid\n      t.string :url, null: false\n      t.string :description\n      t.string :encrypted_secret, null: false\n      t.text :events, array: true, default: []\n      t.boolean :active, default: true, null: false\n      t.datetime :disabled_at\n\n      t.timestamps\n    end\n    add_index :webhook_endpoints, [:organization_id, :active]\n\n    create_table :webhook_deliveries, id: :uuid do |t|\n      t.references :webhook_endpoint, null: false, foreign_key: { on_delete: :cascade }, type: :uuid\n      t.string :event_type, null: false\n      t.jsonb :payload, default: {}, null: false\n      t.string :status, default: \"pending\", null: false\n\n      t.timestamps\n    end\n    add_index :webhook_deliveries, [:webhook_endpoint_id, :created_at]\n    add_index :webhook_deliveries, :status\n\n    create_table :webhook_attempts, id: :uuid do |t|\n      t.references :webhook_delivery, null: false, foreign_key: { on_delete: :cascade }, type: :uuid\n      t.integer :response_status\n      t.integer :duration_ms\n      t.text :error_message\n\n      t.datetime :created_at, null: false\n    end\n    add_index :webhook_attempts, :webhook_delivery_id\n  end\nend\n"
+    },
+    {
+      "id": "OP-002-MODEL",
+      "type": "CREATE_FILE",
+      "path": "app/models/webhook_endpoint.rb",
+      "description": "Create domain model WebhookEndpoint with tenancy association (belongs_to :organization)",
+      "patternApplied": "ApplicationRecord with belongs_to :organization",
+      "codePreview": "# frozen_string_literal: true\n\nclass WebhookEndpoint < ApplicationRecord\n  belongs_to :organization\n\n  has_many :webhook_deliveries, dependent: :destroy\n  has_many :webhook_attempts, through: :webhook_deliveries\n\n  encrypts :encrypted_secret\n\n  validates :url, presence: true, format: { with: URI::DEFAULT_PARSER.make_regexp(%w[http https]), message: \"must be a valid HTTP/HTTPS URL\" }\n  validate :validate_url_not_ssrf\n  validates :encrypted_secret, presence: true\n\n  scope :active, -> { where(active: true) }\n  scope :for_event, ->(event_type) { active.where(\"? = ANY(events) OR events = '{}'\", event_type) }\n\n  before_validation :generate_secret, on: :create\n\n  def generate_secret\n    self.encrypted_secret ||= SecureRandom.hex(24)\n  end\n\n  private\n\n  def validate_url_not_ssrf\n    return if url.blank?\n    Webhooks::SsrfValidatorService.validate!(url)\n  rescue Webhooks::SsrfValidatorService::SsrfAttemptError => e\n    errors.add(:url, \"is invalid or points to an unauthorized private network: #{e.message}\")\n  end\nend\n"
+    },
+    {
+      "id": "OP-003-MODEL",
+      "type": "CREATE_FILE",
+      "path": "app/models/webhook_delivery.rb",
+      "description": "Create domain model WebhookDelivery with tenancy association (belongs_to :webhook_endpoint)",
+      "patternApplied": "ApplicationRecord with belongs_to :webhook_endpoint",
+      "codePreview": "# frozen_string_literal: true\n\nclass WebhookDelivery < ApplicationRecord\n  belongs_to :webhook_endpoint\n  has_many :webhook_attempts, dependent: :destroy\n  has_one :organization, through: :webhook_endpoint\n\n  validates :event_type, presence: true\n  validates :payload, presence: true\n  validates :status, inclusion: { in: %w[pending processing success failed] }\n\n  scope :recent, -> { order(created_at: :desc) }\n  scope :successful, -> { where(status: \"success\") }\n  scope :failed, -> { where(status: \"failed\") }\nend\n"
+    },
+    {
+      "id": "OP-004-MODEL",
+      "type": "CREATE_FILE",
+      "path": "app/models/webhook_attempt.rb",
+      "description": "Create domain model WebhookAttempt with tenancy association (belongs_to :webhook_delivery)",
+      "patternApplied": "ApplicationRecord with belongs_to :webhook_delivery",
+      "codePreview": "# frozen_string_literal: true\n\nclass WebhookAttempt < ApplicationRecord\n  belongs_to :webhook_delivery\n  has_one :webhook_endpoint, through: :webhook_delivery\n\n  validates :duration_ms, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true\n\n  scope :recent, -> { order(created_at: :desc) }\nend\n"
+    },
+    {
+      "id": "OP-005-POLICY",
+      "type": "CREATE_FILE",
+      "path": "app/policies/webhook_endpoint_policy.rb",
+      "description": "Create Pundit authorization policy WebhookEndpointPolicy enforcing strict tenant boundary",
+      "patternApplied": "ApplicationPolicy with Scope isolation",
+      "codePreview": "# frozen_string_literal: true\n\nclass WebhookEndpointPolicy < ApplicationPolicy\n  def index?\n    user.present?\n  end\n\n  def show?\n    owner_or_tenant_member?\n  end\n\n  def create?\n    admin_or_developer?\n  end\n\n  def update?\n    admin_or_developer? && owner_or_tenant_member?\n  end\n\n  def destroy?\n    admin? && owner_or_tenant_member?\n  end\n\n  def test_delivery?\n    admin_or_developer? && owner_or_tenant_member?\n  end\n\n  def deliveries?\n    owner_or_tenant_member?\n  end\n\n  class Scope < ApplicationPolicy::Scope\n    def resolve\n      scope.where(organization: user.organization)\n    end\n  end\n\n  private\n\n  def owner_or_tenant_member?\n    return false unless user.present? && record.present?\n    record.organization_id == (user.respond_to?(:organization_id) ? user.organization_id : user.organization&.id)\n  end\n\n  def admin_or_developer?\n    return true if user.is_a?(Enterprise::ApiKey)\n    return true if user.respond_to?(:admin?) && user.admin?\n    return true if user.respond_to?(:role) && %w[owner admin developer].include?(user.role.to_s)\n    false\n  end\n\n  def admin?\n    return true if user.is_a?(Enterprise::ApiKey)\n    return true if user.respond_to?(:admin?) && user.admin?\n    return true if user.respond_to?(:role) && %w[owner admin].include?(user.role.to_s)\n    false\n  end\nend\n"
+    },
+    {
+      "id": "OP-006-SERVICE",
+      "type": "CREATE_FILE",
+      "path": "app/services/webhooks/dispatch_service.rb",
+      "description": "Create service Webhooks::DispatchService: Fan-out domain events to subscribed tenant webhook endpoints and enqueue background delivery.",
+      "patternApplied": "CALL_METHOD",
+      "codePreview": "# frozen_string_literal: true\n\nmodule Webhooks\n  class DispatchService\n    def self.call(tenant:, event_type:, payload:)\n      new(tenant: tenant, event_type: event_type, payload: payload).call\n    end\n\n    def initialize(tenant:, event_type:, payload:)\n      @tenant = tenant\n      @event_type = event_type\n      @payload = payload\n    end\n\n    def call\n      endpoints = WebhookEndpoint.active.where(organization_id: @tenant.id).for_event(@event_type)\n      return [] if endpoints.empty?\n\n      deliveries = []\n      endpoints.each do |endpoint|\n        delivery = endpoint.webhook_deliveries.create!(\n          event_type: @event_type,\n          payload: @payload,\n          status: \"pending\"\n        )\n        Webhooks::DeliverPayloadJob.perform_later(delivery.id)\n        deliveries << delivery\n      rescue StandardError => e\n        Rails.logger.error(\"[Webhooks::DispatchService] Failed to queue delivery for endpoint #{endpoint.id}: #{e.message}\")\n      end\n\n      deliveries\n    end\n  end\nend\n"
+    },
+    {
+      "id": "OP-007-SERVICE",
+      "type": "CREATE_FILE",
+      "path": "app/services/webhooks/hmac_signer_service.rb",
+      "description": "Create service Webhooks::HmacSignerService: Compute HMAC-SHA256 signature header for outgoing webhook payloads.",
+      "patternApplied": "CALL_METHOD",
+      "codePreview": "# frozen_string_literal: true\n\nrequire \"openssl\"\n\nmodule Webhooks\n  class HmacSignerService\n    def self.sign(secret:, timestamp:, raw_payload:)\n      raise ArgumentError, \"Secret cannot be blank\" if secret.blank?\n      raise ArgumentError, \"Payload cannot be blank\" if raw_payload.nil?\n\n      canonical_string = \"#{timestamp}.#{raw_payload}\"\n      signature = OpenSSL::HMAC.hexdigest(\"SHA256\", secret, canonical_string)\n\n      \"t=#{timestamp},v1=#{signature}\"\n    end\n  end\nend\n"
+    },
+    {
+      "id": "OP-008-SERVICE",
+      "type": "CREATE_FILE",
+      "path": "app/services/webhooks/ssrf_validator_service.rb",
+      "description": "Create service Webhooks::SsrfValidatorService: Resolve destination hostnames and block calls to private, link-local, loopback, or cloud metadata IP ranges.",
+      "patternApplied": "CALL_METHOD",
+      "codePreview": "# frozen_string_literal: true\n\nrequire \"resolv\"\nrequire \"ipaddr\"\n\nmodule Webhooks\n  class SsrfValidatorService\n    class SsrfAttemptError < StandardError; end\n\n    DISALLOWED_RANGES = [\n      IPAddr.new(\"127.0.0.0/8\"),      # Loopback\n      IPAddr.new(\"10.0.0.0/8\"),       # Private Network (RFC 1918)\n      IPAddr.new(\"172.16.0.0/12\"),    # Private Network (RFC 1918)\n      IPAddr.new(\"192.168.0.0/16\"),   # Private Network (RFC 1918)\n      IPAddr.new(\"169.254.0.0/16\"),   # Link-Local / Cloud Metadata (169.254.169.254)\n      IPAddr.new(\"0.0.0.0/8\"),        # Current network\n      IPAddr.new(\"::1/128\"),          # IPv6 Loopback\n      IPAddr.new(\"fc00::/7\"),         # IPv6 Unique Local\n      IPAddr.new(\"fe80::/10\")         # IPv6 Link-Local\n    ].freeze\n\n    def self.validate!(url_string)\n      uri = URI.parse(url_string)\n      raise SsrfAttemptError, \"Scheme must be http or https\" unless %w[http https].include?(uri.scheme&.downcase)\n\n      host = uri.host\n      raise SsrfAttemptError, \"Host cannot be blank\" if host.blank?\n\n      addresses = Resolv.getaddresses(host)\n      raise SsrfAttemptError, \"Unable to resolve host: #{host}\" if addresses.empty?\n\n      addresses.each do |addr_str|\n        ip = IPAddr.new(addr_str)\n        if DISALLOWED_RANGES.any? { |range| range.include?(ip) }\n          raise SsrfAttemptError, \"Destination #{host} (#{addr_str}) is within a forbidden private or local IP range.\"\n        end\n      end\n\n      true\n    end\n  end\nend\n"
+    },
+    {
+      "id": "OP-009-JOB",
+      "type": "CREATE_FILE",
+      "path": "app/jobs/webhooks/deliver_payload_job.rb",
+      "description": "Create background worker Webhooks::DeliverPayloadJob on queue 'webhooks' with timeout 10s",
+      "patternApplied": "ApplicationJob with retry policy",
+      "codePreview": "# frozen_string_literal: true\n\nrequire \"net/http\"\nrequire \"json\"\n\nmodule Webhooks\n  class DeliverPayloadJob < ApplicationJob\n    queue_as :webhooks\n\n    retry_on Net::HTTPError, Timeout::Error, Errno::ECONNREFUSED, wait: :exponentially_longer, attempts: 5 do |job, error|\n      delivery = WebhookDelivery.find_by(id: job.arguments.first)\n      delivery&.update(status: \"failed\") if delivery\n    end\n\n    def perform(delivery_id)\n      delivery = WebhookDelivery.find_by(id: delivery_id)\n      return unless delivery\n      endpoint = delivery.webhook_endpoint\n      return unless endpoint&.active?\n\n      # 1. SSRF Validation\n      Webhooks::SsrfValidatorService.validate!(endpoint.url)\n\n      # 2. Payload & Signature preparation\n      raw_payload = delivery.payload.is_a?(String) ? delivery.payload : delivery.payload.to_json\n      timestamp = Time.now.to_i\n      signature = Webhooks::HmacSignerService.sign(\n        secret: endpoint.encrypted_secret,\n        timestamp: timestamp,\n        raw_payload: raw_payload\n      )\n\n      # 3. HTTP Request execution with 10s strict timeout\n      uri = URI.parse(endpoint.url)\n      http = Net::HTTP.new(uri.host, uri.port)\n      http.use_ssl = (uri.scheme == \"https\")\n      http.open_timeout = 10\n      http.read_timeout = 10\n\n      request = Net::HTTP::Post.new(uri.request_uri)\n      request[\"Content-Type\"] = \"application/json\"\n      request[\"User-Agent\"] = \"GoldenSaaS-Webhooks/1.0\"\n      request[\"X-Webhook-Signature\"] = signature\n      request[\"X-Webhook-Event\"] = delivery.event_type\n      request[\"X-Webhook-Delivery-Id\"] = delivery.id.to_s\n      request[\"X-Webhook-Timestamp\"] = timestamp.to_s\n      request.body = raw_payload\n\n      start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)\n      response = nil\n      error_message = nil\n\n      begin\n        response = http.request(request)\n      rescue StandardError => e\n        error_message = \"#{e.class}: #{e.message}\"\n      ensure\n        duration_ms = ((Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time) * 1000).to_i\n      end\n\n      # 4. Record Attempt\n      delivery.webhook_attempts.create!(\n        response_status: response&.code&.to_i,\n        duration_ms: duration_ms,\n        error_message: error_message\n      )\n\n      # 5. Update Delivery Status\n      if response && response.is_a?(Net::HTTPSuccess)\n        delivery.update!(status: \"success\")\n      else\n        delivery.update!(status: \"failed\")\n        raise StandardError, \"Webhook delivery failed with status #{response&.code || 'TIMEOUT'}: #{error_message}\"\n      end\n    end\n  end\nend\n"
+    },
+    {
+      "id": "OP-010-CONTROLLER",
+      "type": "CREATE_FILE",
+      "path": "app/controllers/api/v1/developer/webhooks_controller.rb",
+      "description": "Create API controller Api::V1::Developer::WebhooksController with authenticate_api_key!",
+      "patternApplied": "ApplicationController",
+      "codePreview": "# frozen_string_literal: true\n\nmodule Api\n  module V1\n    module Developer\n      class WebhooksController < ApplicationController\n        before_action :authenticate_api_key!\n        before_action :set_endpoint, only: %i[show update destroy test_delivery deliveries]\n\n        # GET /api/v1/developer/webhooks\n        def index\n          @endpoints = policy_scope(WebhookEndpoint).order(created_at: :desc)\n          render json: {\n            endpoints: @endpoints.map { |ep| serialize_endpoint(ep) }\n          }, status: :ok\n        end\n\n        # GET /api/v1/developer/webhooks/:id\n        def show\n          authorize @endpoint\n          render json: { endpoint: serialize_endpoint(@endpoint, include_secret: false) }, status: :ok\n        end\n\n        # POST /api/v1/developer/webhooks\n        def create\n          @endpoint = current_tenant.webhook_endpoints.build(webhook_params)\n          authorize @endpoint\n\n          if @endpoint.save\n            render json: {\n              endpoint: serialize_endpoint(@endpoint, include_secret: true),\n              signing_secret: @endpoint.encrypted_secret\n            }, status: :created\n          else\n            render json: { errors: @endpoint.errors.full_messages }, status: :unprocessable_entity\n          end\n        end\n\n        # PATCH /api/v1/developer/webhooks/:id\n        def update\n          authorize @endpoint\n\n          if @endpoint.update(webhook_params)\n            render json: { endpoint: serialize_endpoint(@endpoint) }, status: :ok\n          else\n            render json: { errors: @endpoint.errors.full_messages }, status: :unprocessable_entity\n          end\n        end\n\n        # DELETE /api/v1/developer/webhooks/:id\n        def destroy\n          authorize @endpoint\n          @endpoint.destroy!\n          head :no_content\n        end\n\n        # POST /api/v1/developer/webhooks/:id/test\n        def test_delivery\n          authorize @endpoint\n\n          delivery = @endpoint.webhook_deliveries.create!(\n            event_type: \"ping.test\",\n            payload: { message: \"Test webhook event dispatched from Golden SaaS Platform\", timestamp: Time.now.to_i },\n            status: \"pending\"\n          )\n          Webhooks::DeliverPayloadJob.perform_later(delivery.id)\n\n          render json: {\n            message: \"Test webhook event queued for delivery\",\n            delivery_id: delivery.id\n          }, status: :accepted\n        end\n\n        # GET /api/v1/developer/webhooks/:id/deliveries\n        def deliveries\n          authorize @endpoint\n          @deliveries = @endpoint.webhook_deliveries.recent.limit(50)\n\n          render json: {\n            deliveries: @deliveries.map do |del|\n              {\n                id: del.id,\n                event_type: del.event_type,\n                status: del.status,\n                created_at: del.created_at.iso8601,\n                attempts: del.webhook_attempts.recent.map do |att|\n                  {\n                    response_status: att.response_status,\n                    duration_ms: att.duration_ms,\n                    error_message: att.error_message,\n                    attempted_at: att.created_at.iso8601\n                  }\n                end\n              }\n            end\n          }, status: :ok\n        end\n\n        private\n\n        def set_endpoint\n          @endpoint = WebhookEndpoint.find(params[:id])\n        end\n\n        def webhook_params\n          params.require(:webhook_endpoint).permit(:url, :description, :active, events: [])\n        end\n\n        def current_tenant\n          if defined?(current_organization) && current_organization\n            current_organization\n          elsif defined?(current_company) && current_company\n            current_company\n          elsif defined?(current_account) && current_account\n            current_account\n          elsif @current_api_key&.organization\n            @current_api_key.organization\n          else\n            raise ActiveRecord::RecordNotFound, \"Tenant context not found\"\n          end\n        end\n\n        def serialize_endpoint(endpoint, include_secret: false)\n          data = {\n            id: endpoint.id,\n            organization_id: endpoint.organization_id,\n            url: endpoint.url,\n            description: endpoint.description,\n            events: endpoint.events,\n            active: endpoint.active,\n            created_at: endpoint.created_at.iso8601,\n            updated_at: endpoint.updated_at.iso8601\n          }\n          data[:signing_secret] = endpoint.encrypted_secret if include_secret\n          data\n        end\n      end\n    end\n  end\nend\n"
+    },
+    {
+      "id": "OP-011-ROUTES",
+      "type": "REGISTER_ROUTE",
+      "path": "config/routes.rb",
+      "description": "Register RESTful API routes under /api/v1/developer/webhooks",
+      "patternApplied": "Rails REST Routing",
+      "codePreview": "get 'developer/webhooks', to: 'developer/webhooks#index'\npost 'developer/webhooks', to: 'developer/webhooks#create'\nget 'developer/webhooks/:id', to: 'developer/webhooks#show'\npatch 'developer/webhooks/:id', to: 'developer/webhooks#update'\ndelete 'developer/webhooks/:id', to: 'developer/webhooks#destroy'\npost 'developer/webhooks/:id/test', to: 'developer/webhooks#test_delivery'\nget 'developer/webhooks/:id/deliveries', to: 'developer/webhooks#deliveries'"
+    },
+    {
+      "id": "OP-012-ADMIN",
+      "type": "ADD_ACTIVE_ADMIN",
+      "path": "app/admin/webhook_endpoints.rb",
+      "description": "Register ActiveAdmin resource WebhookEndpoint",
+      "patternApplied": "ActiveAdmin Resource DSL",
+      "codePreview": "# frozen_string_literal: true\n\nActiveAdmin.register WebhookEndpoint do\n  menu parent: \"Developer & Integrations\", priority: 50\n\n  permit_params :url, :description, :active, events: []\n\n  filter :organization\n  filter :url\n  filter :active\n  filter :created_at\n\n  index do\n    selectable_column\n    id_column\n    column :organization\n    column :url\n    column :active\n    column :events\n    column :created_at\n    actions\n  end\n\n  show do\n    attributes_table do\n      row :id\n      row :organization\n      row :url\n      row :description\n      row :active\n      row :events\n      row :created_at\n      row :updated_at\n    end\n\n    panel \"Recent Deliveries\" do\n      table_for webhook_endpoint.webhook_deliveries.recent.limit(10) do\n        column :id\n        column :event_type\n        column :status\n        column :created_at\n      end\n    end\n  end\nend\n"
+    },
+    {
+      "id": "OP-013-ADMIN",
+      "type": "ADD_ACTIVE_ADMIN",
+      "path": "app/admin/webhook_deliveries.rb",
+      "description": "Register ActiveAdmin resource WebhookDelivery",
+      "patternApplied": "ActiveAdmin Resource DSL",
+      "codePreview": "# frozen_string_literal: true\n\nActiveAdmin.register WebhookDelivery do\n  menu parent: \"Developer & Integrations\", priority: 51\n  actions :index, :show\n\n  filter :webhook_endpoint\n  filter :event_type\n  filter :status\n  filter :created_at\n\n  index do\n    id_column\n    column :webhook_endpoint\n    column :event_type\n    column :status\n    column :created_at\n    actions\n  end\n\n  show do\n    attributes_table do\n      row :id\n      row :webhook_endpoint\n      row :event_type\n      row :status\n      row :payload do |d|\n        pre JSON.pretty_generate(d.payload) rescue d.payload.to_s\n      end\n      row :created_at\n    end\n\n    panel \"Delivery Attempts\" do\n      table_for webhook_delivery.webhook_attempts.recent do\n        column :id\n        column :response_status\n        column :duration_ms\n        column :error_message\n        column :created_at\n      end\n    end\n  end\nend\n"
+    },
+    {
+      "id": "OP-014-TEST",
+      "type": "CREATE_FILE",
+      "path": "spec/models/webhook_endpoint_spec.rb",
+      "description": "Create MODEL_SPEC test suite: Validates WebhookEndpoint associations, validations, secret generation, and encryption.",
+      "patternApplied": "RSpec MODEL_SPEC",
+      "codePreview": "# frozen_string_literal: true\n\nrequire \"rails_helper\"\n\nRSpec.describe WebhookEndpoint, type: :model do\n  let(:tenant) { create(:organization) }\n  subject { build(:webhook_endpoint, organization: tenant, url: \"https://example.com/webhooks\") }\n\n  it { is_expected.to belong_to(:organization) }\n  it { is_expected.to have_many(:webhook_deliveries).dependent(:destroy) }\n\n  it \"generates encrypted_secret before validation on create\" do\n    endpoint = described_class.create!(\n      organization: tenant,\n      url: \"https://api.external.com/hook\"\n    )\n    expect(endpoint.encrypted_secret).to be_present\n    expect(endpoint.encrypted_secret.length).to eq(48)\n  end\n\n  it \"blocks internal IP ranges via SSRF validation\" do\n    endpoint = build(:webhook_endpoint, organization: tenant, url: \"http://127.0.0.1:3000/webhook\")\n    expect(endpoint).not_to be_valid\n    expect(endpoint.errors[:url]).to include(/unauthorized private network/i)\n  end\nend\n"
+    },
+    {
+      "id": "OP-015-TEST",
+      "type": "CREATE_FILE",
+      "path": "spec/requests/api/v1/developer/webhooks_spec.rb",
+      "description": "Create REQUEST_SPEC test suite: Integration request tests for webhook management endpoints.",
+      "patternApplied": "RSpec REQUEST_SPEC",
+      "codePreview": "# frozen_string_literal: true\n\nrequire \"rails_helper\"\n\nRSpec.describe \"Api::V1::Developer::Webhooks\", type: :request do\n  let(:tenant) { create(:organization) }\n  let(:api_key) { create(:api_key, organization: tenant) }\n  let(:headers) { { \"Authorization\" => \"Bearer #{api_key.raw_token}\" } }\n\n  describe \"POST /api/v1/developer/webhooks\" do\n    it \"creates a new webhook endpoint and reveals secret once\" do\n      post \"/api/v1/developer/webhooks\",\n        params: { webhook_endpoint: { url: \"https://partner.com/webhook\", events: [\"mission.created\"] } },\n        headers: headers\n\n      expect(response).to have_http_status(:created)\n      json = JSON.parse(response.body)\n      expect(json[\"endpoint\"][\"url\"]).to eq(\"https://partner.com/webhook\")\n      expect(json[\"signing_secret\"]).to be_present\n    end\n  end\nend\n"
+    },
+    {
+      "id": "OP-016-TEST",
+      "type": "CREATE_FILE",
+      "path": "spec/requests/api/v1/developer/webhooks_cross_tenant_spec.rb",
+      "description": "Create CROSS_TENANT_SPEC test suite: Strict isolation verification between different tenant organizations.",
+      "patternApplied": "RSpec CROSS_TENANT_SPEC",
+      "codePreview": "# frozen_string_literal: true\n\nrequire \"rails_helper\"\n\nRSpec.describe \"Webhooks Cross-Tenant Isolation Gate\", type: :request do\n  let(:tenant_a) { create(:organization) }\n  let(:tenant_b) { create(:organization) }\n\n  let(:api_key_a) { create(:api_key, organization: tenant_a) }\n  let(:api_key_b) { create(:api_key, organization: tenant_b) }\n\n  let!(:endpoint_b) { create(:webhook_endpoint, organization: tenant_b, url: \"https://tenant-b.com/hook\") }\n\n  it \"strictly blocks Tenant A from viewing Tenant B's endpoint\" do\n    get \"/api/v1/developer/webhooks/#{endpoint_b.id}\",\n      headers: { \"Authorization\" => \"Bearer #{api_key_a.raw_token}\" }\n\n    expect(response).to have_http_status(:not_found)\n  end\n\n  it \"strictly blocks Tenant A from deleting Tenant B's endpoint\" do\n    delete \"/api/v1/developer/webhooks/#{endpoint_b.id}\",\n      headers: { \"Authorization\" => \"Bearer #{api_key_a.raw_token}\" }\n\n    expect(response).to have_http_status(:not_found)\n    expect(WebhookEndpoint.find_by(id: endpoint_b.id)).to be_present\n  end\nend\n"
+    },
+    {
+      "id": "OP-017-TEST",
+      "type": "CREATE_FILE",
+      "path": "spec/services/webhooks/ssrf_validator_service_spec.rb",
+      "description": "Create SERVICE_SPEC test suite: Validates strict SSRF prevention against private IP blocks and cloud metadata addresses.",
+      "patternApplied": "RSpec SERVICE_SPEC",
+      "codePreview": "# frozen_string_literal: true\n\nrequire \"rails_helper\"\n\nRSpec.describe Webhooks::SsrfValidatorService do\n  it \"blocks AWS metadata IP\" do\n    expect {\n      described_class.validate!(\"http://169.254.169.254/latest/meta-data\")\n    }.to raise_error(Webhooks::SsrfValidatorService::SsrfAttemptError, /forbidden private or local IP range/i)\n  end\n\n  it \"blocks RFC 1918 private subnets\" do\n    expect {\n      described_class.validate!(\"http://192.168.1.1/admin\")\n    }.to raise_error(Webhooks::SsrfValidatorService::SsrfAttemptError)\n  end\nend\n"
+    },
+    {
+      "id": "OP-018-TEST",
+      "type": "CREATE_FILE",
+      "path": "spec/jobs/webhooks/deliver_payload_job_spec.rb",
+      "description": "Create JOB_SPEC test suite: Validates async HTTP POST, HMAC header generation, and attempt logging.",
+      "patternApplied": "RSpec JOB_SPEC",
+      "codePreview": "# frozen_string_literal: true\n\nrequire \"rails_helper\"\n\nRSpec.describe Webhooks::DeliverPayloadJob, type: :job do\n  let(:tenant) { create(:organization) }\n  let(:endpoint) { create(:webhook_endpoint, organization: tenant, url: \"https://example.com/hook\") }\n  let(:delivery) { create(:webhook_delivery, webhook_endpoint: endpoint, event_type: \"mission.created\", payload: { id: \"123\" }) }\n\n  it \"dispatches HTTP request with HMAC header and marks success\" do\n    stub_request(:post, \"https://example.com/hook\")\n      .with(headers: { \"X-Webhook-Event\" => \"mission.created\" })\n      .to_return(status: 200, body: '{\"ok\":true}')\n\n    described_class.new.perform(delivery.id)\n\n    expect(delivery.reload.status).to eq(\"success\")\n    expect(delivery.webhook_attempts.count).to eq(1)\n    expect(delivery.webhook_attempts.first.response_status).to eq(200)\n  end\nend\n"
+    }
+  ],
+  "verification": [
+    {
+      "step": 1,
+      "name": "Verify Schema Migration & Rollback Reversibility",
+      "command": "bundle exec rails db:migrate && bundle exec rails db:rollback STEP=1 && bundle exec rails db:migrate",
+      "expected": "Database migrations executed and rolled back cleanly with 0 errors."
+    },
+    {
+      "step": 2,
+      "name": "Execute Model & Validation Specs",
+      "command": "bundle exec rspec spec/models/webhooks_*_spec.rb spec/models/webhook_*.rb",
+      "expected": "0 failures"
+    },
+    {
+      "step": 3,
+      "name": "Execute Request & Authorization Specs",
+      "command": "bundle exec rspec spec/requests/api/v1/developer/webhooks_spec.rb",
+      "expected": "0 failures"
+    },
+    {
+      "step": 4,
+      "name": "Execute Cross-Tenant Isolation Gate",
+      "command": "bundle exec rspec spec/requests/api/v1/developer/webhooks_cross_tenant_spec.rb",
+      "expected": "0 failures"
+    },
+    {
+      "step": 5,
+      "name": "Execute SSRF Network Boundary Gate",
+      "command": "bundle exec rspec spec/services/webhooks/ssrf_validator_service_spec.rb",
+      "expected": "0 failures"
+    },
+    {
+      "step": 6,
+      "name": "RuboCop Style & Security Linter",
+      "command": "bundle exec rubocop app/models/webhook* app/controllers/api/v1/developer/webhooks* app/jobs/webhooks* app/services/webhooks*",
+      "expected": "no offenses detected"
+    }
+  ],
+  "rollback": [
+    {
+      "step": 1,
+      "name": "Rollback Migration via Rails",
+      "action": "bundle exec rails db:rollback STEP=1"
+    },
+    {
+      "step": 2,
+      "name": "Direct Table Drop (Emergency Fallback)",
+      "action": "ActiveRecord::Base.connection.execute('DROP TABLE IF EXISTS webhook_attempts, webhook_deliveries, webhook_endpoints CASCADE;')"
+    }
+  ],
+  "approval_required": true
+}

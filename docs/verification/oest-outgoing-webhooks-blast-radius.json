@@ -1,0 +1,15 @@
+{
+  "direct": [
+    "Model: Organization (receives association)",
+    "Controller: Api::V1::Developer::WebhooksController",
+    "Job: Webhooks::DeliverPayloadJob"
+  ],
+  "transitive": [
+    "TABLE: organizations"
+  ],
+  "critical": [
+    "Model: Organization (Core Tenancy Boundary)"
+  ],
+  "testsProtecting": [],
+  "impactedComponentsCount": 4
+}

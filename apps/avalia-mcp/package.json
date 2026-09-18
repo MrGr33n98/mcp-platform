@@ -1,0 +1,22 @@
+{
+  "name": "@mcp-platform/avalia-mcp",
+  "version": "0.1.0",
+  "description": "Avalia Solar MCP stdio application.",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "avalia-mcp": "./bin/avalia-mcp.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@mcp-platform/core": "file:../../packages/core",
+    "@mcp-platform/avalia-adapter": "file:../../packages/avalia-adapter",
+    "@mcp-platform/rails-api-client": "file:../../packages/rails-api-client",
+    "zod": "^4.6.5"
+  }
+}

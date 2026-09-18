@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "receipt_type": "VERIFICATION_RECEIPT",
+  "verification_id": "VERIF-1789689255588-B24DUA",
+  "change_plan_digest": "e09a968b3b30875517bfaef31d910087a7eea9d8a6bbe624cbe225e324555eee",
+  "repository_revision": {
+    "commitSha": "8326d3538a2f2b472f060fd13e5656c48d79723c",
+    "branch": "main",
+    "dirty": true,
+    "capturedAt": "2026-09-17T23:54:15.584Z"
+  },
+  "verification_status": "PASS",
+  "verification_digest": "24bc57aba12435cabae1e8136d4dbe22546cd44a4ad46033f70bdb6cd2655ae8",
+  "timestamp": "2026-09-17T23:54:15.589Z"
+}

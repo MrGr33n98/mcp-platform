@@ -1,0 +1,40 @@
+schema_version: 1
+
+capability:
+  id: mcp
+  name: Model Context Protocol & Agentic Integration
+  category: DEVELOPER_PLATFORM
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - McpProposal
+    - McpAudit
+
+  security:
+    tenant_scoped: true
+    hitl_governance: true
+    sha256_proposal_hash: true
+    output_redaction: true
+    rate_limited: true
+
+  backend:
+    models:
+      - McpProposal
+      - McpAudit
+    jobs:
+      - CleanupExpiredProposalsJob
+
+  admin:
+    required: true
+    resource: McpAudit
+
+  customer_frontend:
+    required: true
+    pages:
+      - /settings/integrations
+
+  tests:
+    hitl_governance: true
+    redaction: true
+    cross_tenant: true

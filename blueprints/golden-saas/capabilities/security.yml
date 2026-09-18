@@ -1,0 +1,25 @@
+schema_version: 1
+capability_id: security
+name: Security & Hardening
+category: SECURITY
+severity: P0_CRITICAL
+description: Proteção de infraestrutura, rate limiting, encriptação e mitigação de ameaças.
+reference_implementation: "LastSaaS Arcjet/Headers"
+golden_stack_adaptation: "Rails 8 Rack::Attack + SecureHeaders + ActiveRecord Encryption"
+
+requirements:
+  - id: SEC-001
+    title: Rate Limiting & Throttling
+    description: Configuração de limites de requisição por IP e por API key (Rack::Attack).
+    type: CONFIG
+    required: true
+  - id: SEC-002
+    title: PII Column-Level Encryption
+    description: Encriptação em repouso de dados sensíveis e fiscais com chaves gerenciadas.
+    type: MODEL
+    required: true
+  - id: SEC-003
+    title: Security Headers
+    description: CSP estrito, proteção anti-clickjacking e HSTS configurados.
+    type: CONFIG
+    required: true

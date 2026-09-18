@@ -1,0 +1,19 @@
+{
+  "logs": "AVAILABLE",
+  "metrics": "UNAVAILABLE",
+  "errors": "AVAILABLE",
+  "deployments": "PARTIAL",
+  "database": "AVAILABLE",
+  "redis": "AVAILABLE",
+  "jobs": "AVAILABLE",
+  "storage": "AVAILABLE",
+  "traces": "UNAVAILABLE",
+  "configured_providers": [
+    "Rails Logs (log_stream)",
+    "Sentry Error Tracker",
+    "PostgreSQL (ActiveRecord Database Health)",
+    "Sidekiq Queue Health",
+    "Redis Store",
+    "ActiveStorage / S3 Object Health"
+  ]
+}

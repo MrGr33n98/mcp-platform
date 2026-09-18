@@ -1,0 +1,12 @@
+{
+  "logs": "AVAILABLE",
+  "metrics": "UNAVAILABLE",
+  "errors": "UNAVAILABLE",
+  "deployments": "PARTIAL",
+  "database": "UNAVAILABLE",
+  "redis": "UNAVAILABLE",
+  "jobs": "UNAVAILABLE",
+  "storage": "UNAVAILABLE",
+  "traces": "UNAVAILABLE",
+  "configured_providers": []
+}

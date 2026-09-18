@@ -1,0 +1,20 @@
+schema_version: 1
+capability_id: deployment
+name: Deployment & Containers
+category: DEVELOPER_PLATFORM
+severity: P2_NORMAL
+description: Padronização de containers Docker e orquestração de deploy.
+reference_implementation: "LastSaaS Vercel/Docker"
+golden_stack_adaptation: "Docker Multi-Stage + Kamal 2.0 / Compose + Healthcheck Probe"
+
+requirements:
+  - id: DPL-001
+    title: Production Dockerfile
+    description: Dockerfile multi-stage com pré-compilação e usuário não-root.
+    type: CONFIG
+    required: true
+  - id: DPL-002
+    title: Healthcheck Probes
+    description: Endpoint /up ou /health retornando status de dependências.
+    type: ROUTE
+    required: true

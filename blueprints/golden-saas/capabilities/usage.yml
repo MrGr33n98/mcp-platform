@@ -1,0 +1,20 @@
+schema_version: 1
+capability_id: usage
+name: Usage Metering
+category: BILLING
+severity: P1_MAJOR
+description: Rastreamento e tarifação baseada em volume de consumo.
+reference_implementation: "LastSaaS Metered Usage"
+golden_stack_adaptation: "Rails 8 Redis Buffer + UsageRecord Partitioned + Stripe Sync Job"
+
+requirements:
+  - id: USG-001
+    title: Usage Record Model
+    description: Modelo UsageRecord com metric_name, quantity, timestamp e idempotency_key.
+    type: MODEL
+    required: true
+  - id: USG-002
+    title: Event Tracking Service
+    description: Serviço de agregação de eventos de consumo em tempo real.
+    type: SERVICE
+    required: true

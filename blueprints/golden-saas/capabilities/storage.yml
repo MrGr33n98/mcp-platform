@@ -1,0 +1,20 @@
+schema_version: 1
+capability_id: storage
+name: File Storage & Assets
+category: OPERATIONS
+severity: P2_NORMAL
+description: Upload direto e gerenciamento seguro de arquivos com cotas por tenant.
+reference_implementation: "LastSaaS S3 Uploads"
+golden_stack_adaptation: "Rails 8 ActiveStorage + S3/Spaces/R2 + Direct Uploads"
+
+requirements:
+  - id: STOR-001
+    title: ActiveStorage Integration
+    description: Configuração de storage com suporte a provedor em nuvem.
+    type: CONFIG
+    required: true
+  - id: STOR-002
+    title: Storage Quota Enforcer
+    description: Validação de cota máxima de armazenamento antes do upload direto.
+    type: SERVICE
+    required: true

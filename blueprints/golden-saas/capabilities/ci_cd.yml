@@ -1,0 +1,20 @@
+schema_version: 1
+capability_id: ci_cd
+name: CI/CD Pipeline
+category: DEVELOPER_PLATFORM
+severity: P2_NORMAL
+description: Pipeline de integração contínua com validação estática e suíte de testes.
+reference_implementation: "LastSaaS GitHub Actions"
+golden_stack_adaptation: "GitHub Actions Matrix (Ruby/Rails + Node/Next) + Brakeman + RSpec"
+
+requirements:
+  - id: CICD-001
+    title: CI Workflow Definition
+    description: Pipeline do GitHub Actions configurado para rodar em push/pull_request.
+    type: CONFIG
+    required: true
+  - id: CICD-002
+    title: Security Scanners in CI
+    description: Execução de Brakeman e verificação de vulnerabilidades de dependências.
+    type: CONFIG
+    required: true

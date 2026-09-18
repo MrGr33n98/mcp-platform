@@ -1,0 +1,25 @@
+schema_version: 1
+capability_id: testing
+name: Automated Testing Suite
+category: DEVELOPER_PLATFORM
+severity: P2_NORMAL
+description: Suíte de testes automatizados com cobertura de regras, isolamento e APIs.
+reference_implementation: "LastSaaS Vitest/Playwright"
+golden_stack_adaptation: "Rails 8 RSpec + FactoryBot + DatabaseCleaner + MultiTenantHelper"
+
+requirements:
+  - id: TST-001
+    title: Unit and Model Specs
+    description: Testes unitários para models, validações e escopos.
+    type: TEST
+    required: true
+  - id: TST-002
+    title: Multi-Tenant Request Specs
+    description: Testes de API validando estritamente isolamento cross-tenant e status HTTP.
+    type: TEST
+    required: true
+  - id: TST-003
+    title: Policy Specs
+    description: Testes cobrindo cada ação de autorização Pundit.
+    type: TEST
+    required: true

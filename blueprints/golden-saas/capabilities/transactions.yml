@@ -1,0 +1,20 @@
+schema_version: 1
+capability_id: transactions
+name: Transactions & Invoices
+category: BILLING
+severity: P1_MAJOR
+description: Histórico de faturas, recibos e conciliação de pagamentos.
+reference_implementation: "LastSaaS Invoicing"
+golden_stack_adaptation: "Rails 8 ActiveRecord (Invoice, PaymentTransaction) + ActiveStorage"
+
+requirements:
+  - id: TXN-001
+    title: Invoice Model
+    description: Modelo Invoice com stripe_invoice_id, status, valores e links para PDF.
+    type: MODEL
+    required: true
+  - id: TXN-002
+    title: Invoice Sync Service
+    description: Serviço de processamento de webhooks de fatura com idempotência.
+    type: SERVICE
+    required: true

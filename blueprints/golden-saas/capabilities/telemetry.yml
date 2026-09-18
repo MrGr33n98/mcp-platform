@@ -1,0 +1,49 @@
+schema_version: 1
+
+capability:
+  id: telemetry
+  name: Product Analytics & SaaS KPIs
+  category: ANALYTICS
+  classification: RECOMMENDED
+
+requirements:
+  domain_objects:
+    - TelemetryEvent
+    - DailyMetricSnapshot
+    - CohortRecord
+
+  security:
+    tenant_scoped: true
+    gdpr_anonymized: true
+    rate_limited_ingestion: true
+
+  backend:
+    models:
+      - TelemetryEvent
+      - DailyMetricSnapshot
+    jobs:
+      - FlushEventBufferJob
+      - ComputeDailyRollupJob
+      - PurgeOldEventsJob
+
+  api:
+    endpoints:
+      - method: POST
+        path: /api/v1/telemetry/events
+      - method: GET
+        path: /api/admin/pm/funnel
+      - method: GET
+        path: /api/admin/pm/kpis
+      - method: GET
+        path: /api/admin/pm/retention
+      - method: GET
+        path: /api/admin/pm/engagement
+
+  admin:
+    required: true
+    resource: DailyMetricSnapshot
+
+  tests:
+    service: true
+    job: true
+    rate_limit: true

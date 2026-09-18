@@ -1,0 +1,39 @@
+schema_version: 1
+
+capability:
+  id: admin
+  name: Operations & Backoffice Control
+  category: ADMIN
+  classification: REQUIRED
+
+requirements:
+  domain_objects:
+    - AdminUser
+    - Announcement
+    - ConfigVar
+
+  security:
+    role_restricted: true
+    mfa_required_for_admin: true
+    time_limited_impersonation: true
+
+  backend:
+    models:
+      - AdminUser
+      - Announcement
+      - ConfigVar
+    controllers:
+      - ActiveAdmin::Devise::SessionsController
+    policies:
+      - AdminPolicy
+
+  admin:
+    required: true
+    resources:
+      - AdminUser
+      - Announcement
+      - ConfigVar
+
+  tests:
+    policy: true
+    security: true

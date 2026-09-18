@@ -1,0 +1,30 @@
+schema_version: 1
+capability_id: plans
+name: Plans & Pricing
+category: BILLING
+severity: P1_MAJOR
+description: Gestão de catálogo de planos, preços, moedas e intervalos de recorrência.
+reference_implementation: "LastSaaS Stripe Pricing"
+golden_stack_adaptation: "Rails 8 ActiveRecord (Plan, Price) + Stripe Checkout/Billing"
+
+requirements:
+  - id: PLAN-001
+    title: Plan Catalog Model
+    description: Modelo Plan com slug único, status ativo e ordenação.
+    type: MODEL
+    required: true
+  - id: PLAN-002
+    title: Pricing Model
+    description: Modelo Price associado a Plan com moeda, valor e intervalo de recorrência.
+    type: MODEL
+    required: true
+  - id: PLAN-003
+    title: Public Plans API
+    description: Endpoint para listagem pública de planos e preços ativos.
+    type: ROUTE
+    required: true
+  - id: PLAN-004
+    title: Backoffice Plan Management
+    description: Interface de administração ActiveAdmin para criar e editar planos.
+    type: ADMIN_RESOURCE
+    required: false

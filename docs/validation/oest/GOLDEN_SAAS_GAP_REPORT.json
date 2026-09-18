@@ -1,0 +1,1394 @@
+{
+  "generatedAt": "2026-09-17T23:09:50.384Z",
+  "repository": {
+    "path": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend",
+    "name": "backend"
+  },
+  "validationStatus": "VALID",
+  "overallScore": 79,
+  "scoreBreakdown": {
+    "p0_security_tenancy": 100,
+    "p1_monetization_integrity": 100,
+    "p2_operations_observability": 0,
+    "p3_ux_branding": 89
+  },
+  "summary": {
+    "total": 11,
+    "pass": 8,
+    "partial": 0,
+    "missing": 3,
+    "fail": 0,
+    "not_verified": 0,
+    "not_applicable": 0
+  },
+  "audits": [
+    {
+      "capabilityId": "authentication",
+      "name": "Multi-Tenant Authentication & Identity",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\user.rb",
+        "Gemfile",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\admin\\sessions_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\auth_controller.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\user.rb",
+          "symbol": "User",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model User defined in user.rb."
+        },
+        {
+          "file": "Gemfile",
+          "evidence_type": "DEPENDENCY",
+          "confidence": "HIGH",
+          "description": "Devise authentication gem present."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\admin\\sessions_controller.rb",
+          "symbol": "SessionsController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller SessionsController with actions [create, destroy, new, admin_role, valid_password]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\auth_controller.rb",
+          "symbol": "AuthController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller AuthController with actions [sign_up, sign_in, refresh, password_reset_request, password_reset, verify_email, resend_verification, me, set_request_id, hash_password, password_match, issue_tokens, encode_token, decode_token, current_user_from_header, user_payload, organization_payload, normalized_user_type, organization_type_for, unique_slug, render_error]."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "AUTH-001",
+          "title": "User Identity Model",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\user.rb",
+              "symbol": "User",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model User defined in user.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "User model found at C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\user.rb."
+        },
+        {
+          "requirementId": "AUTH-002",
+          "title": "Password Security & Hashing",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "Gemfile",
+              "evidence_type": "DEPENDENCY",
+              "confidence": "HIGH",
+              "description": "Devise authentication gem present."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Devise or password hashing mechanism verified."
+        },
+        {
+          "requirementId": "AUTH-003",
+          "title": "Session & Token Management",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\admin\\sessions_controller.rb",
+              "symbol": "SessionsController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller SessionsController with actions [create, destroy, new, admin_role, valid_password]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\auth_controller.rb",
+              "symbol": "AuthController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller AuthController with actions [sign_up, sign_in, refresh, password_reset_request, password_reset, verify_email, resend_verification, me, set_request_id, hash_password, password_match, issue_tokens, encode_token, decode_token, current_user_from_header, user_payload, organization_payload, normalized_user_type, organization_type_for, unique_slug, render_error]."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Session/Auth controllers or JWT handling verified."
+        }
+      ],
+      "existingImplementation": "Authentication partially implemented (3/3 requirements)",
+      "missingPieces": [],
+      "securityGaps": [
+        "MFA / TOTP not detected in codebase"
+      ],
+      "testGaps": [
+        "Timing-safe login and password reset specs"
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityId": "tenancy",
+      "name": "Multi-Tenancy, Memberships & RBAC",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\billing\\subscription.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\deliverables\\asset.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\deliverables\\deliverable.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\api_key.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\profile.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\marketplace\\service_offering.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission_product.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission_requirement.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\notification.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\associated_operator.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\coverage_area.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\drone.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\drone_payload.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\lead_inquiry.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_contract.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_data_product.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_material.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_profile.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\payload.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\payout_profile.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\pilot.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\support_request.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_entitlement.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_membership.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\projects\\project.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_membership.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\admin\\admin_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_event_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_placement_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\billing\\payment_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\category_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\deliverables\\deliverable_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\marketplace\\service_category_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\membership_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\missions\\mission_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\operators\\operator_profile_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\orders\\order_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\organization_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\projects\\project_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\quotes\\quote_policy.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\reviews\\review_policy.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization.rb",
+          "symbol": "Organization",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Organization defined in organization.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\billing\\subscription.rb",
+          "symbol": "Subscription",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Subscription defined in subscription.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\deliverables\\asset.rb",
+          "symbol": "Asset",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Asset defined in asset.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\deliverables\\deliverable.rb",
+          "symbol": "Deliverable",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Deliverable defined in deliverable.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\api_key.rb",
+          "symbol": "ApiKey",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model ApiKey defined in api_key.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\profile.rb",
+          "symbol": "Profile",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Profile defined in profile.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\marketplace\\service_offering.rb",
+          "symbol": "ServiceOffering",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model ServiceOffering defined in service_offering.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission.rb",
+          "symbol": "Mission",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Mission defined in mission.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission_product.rb",
+          "symbol": "MissionProduct",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model MissionProduct defined in mission_product.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission_requirement.rb",
+          "symbol": "MissionRequirement",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model MissionRequirement defined in mission_requirement.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\notification.rb",
+          "symbol": "Notification",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Notification defined in notification.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\associated_operator.rb",
+          "symbol": "AssociatedOperator",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model AssociatedOperator defined in associated_operator.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\coverage_area.rb",
+          "symbol": "CoverageArea",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model CoverageArea defined in coverage_area.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\drone.rb",
+          "symbol": "Drone",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Drone defined in drone.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\drone_payload.rb",
+          "symbol": "DronePayload",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model DronePayload defined in drone_payload.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\lead_inquiry.rb",
+          "symbol": "LeadInquiry",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model LeadInquiry defined in lead_inquiry.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_contract.rb",
+          "symbol": "OperatorContract",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model OperatorContract defined in operator_contract.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_data_product.rb",
+          "symbol": "OperatorDataProduct",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model OperatorDataProduct defined in operator_data_product.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_material.rb",
+          "symbol": "OperatorMaterial",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model OperatorMaterial defined in operator_material.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_profile.rb",
+          "symbol": "OperatorProfile",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model OperatorProfile defined in operator_profile.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\payload.rb",
+          "symbol": "Payload",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Payload defined in payload.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\payout_profile.rb",
+          "symbol": "PayoutProfile",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model PayoutProfile defined in payout_profile.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\pilot.rb",
+          "symbol": "Pilot",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Pilot defined in pilot.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\support_request.rb",
+          "symbol": "SupportRequest",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model SupportRequest defined in support_request.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_entitlement.rb",
+          "symbol": "OrganizationEntitlement",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model OrganizationEntitlement defined in organization_entitlement.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_membership.rb",
+          "symbol": "OrganizationMembership",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model OrganizationMembership defined in organization_membership.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\projects\\project.rb",
+          "symbol": "Project",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Project defined in project.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_membership.rb",
+          "symbol": "OrganizationMembership",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model OrganizationMembership defined in organization_membership.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\admin\\admin_policy.rb",
+          "symbol": "AdminPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy AdminPolicy protecting model Admin with actions [access, verify_operator, moderate_review, resolve_dispute, manage_categories, view_risk]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_event_policy.rb",
+          "symbol": "BannerEventPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy BannerEventPolicy protecting model BannerEvent with actions [index, show, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_placement_policy.rb",
+          "symbol": "BannerPlacementPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy BannerPlacementPolicy protecting model BannerPlacement with actions [index, show, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_policy.rb",
+          "symbol": "BannerPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy BannerPolicy protecting model Banner with actions [index, show, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\billing\\payment_policy.rb",
+          "symbol": "PaymentPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy PaymentPolicy protecting model Payment with actions [index, confirm_payment, role_in, platform_admin]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\category_policy.rb",
+          "symbol": "CategoryPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy CategoryPolicy protecting model Category with actions [index, show, create, update, destroy, publish, archive, restore, manage_seo, manage_media, content_manager, admin]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\deliverables\\deliverable_policy.rb",
+          "symbol": "DeliverablePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy DeliverablePolicy protecting model Deliverable with actions [index, show, create, approve, reject, operator_on_mission]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\marketplace\\service_category_policy.rb",
+          "symbol": "ServiceCategoryPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ServiceCategoryPolicy protecting model ServiceCategory with actions [index, show, create, update, destroy]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\membership_policy.rb",
+          "symbol": "MembershipPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy MembershipPolicy protecting model Membership with actions [index, update, destroy, invite]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\missions\\mission_policy.rb",
+          "symbol": "MissionPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy MissionPolicy protecting model Mission with actions [index, show, create, update, publish, cancel, approve_deliverable, public_marketplace_visible]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\operators\\operator_profile_policy.rb",
+          "symbol": "OperatorProfilePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy OperatorProfilePolicy protecting model OperatorProfile with actions [show, update, manage_fleet]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\orders\\order_policy.rb",
+          "symbol": "OrderPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy OrderPolicy protecting model Order with actions [index, show, cancel, confirm_payment, complete, customer_side, operator_side]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\organization_policy.rb",
+          "symbol": "OrganizationPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy OrganizationPolicy protecting model Organization with actions [index, show, create, update, manage_members]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\projects\\project_policy.rb",
+          "symbol": "ProjectPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ProjectPolicy protecting model Project with actions [index, show, create, update, archive]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\quotes\\quote_policy.rb",
+          "symbol": "QuotePolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy QuotePolicy protecting model Quote with actions [index, show, create, submit, accept, reject, withdraw, customer_side, operator_side, operator_side_context]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\reviews\\review_policy.rb",
+          "symbol": "ReviewPolicy",
+          "evidence_type": "POLICY",
+          "detector": "RailsPolicyParser",
+          "confidence": "HIGH",
+          "description": "Pundit policy ReviewPolicy protecting model Review with actions [create, show, membership_active, record_org_match]."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "TEN-001",
+          "title": "Root Tenant Domain Model",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization.rb",
+              "symbol": "Organization",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Organization defined in organization.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Tenant model Organization found at C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization.rb."
+        },
+        {
+          "requirementId": "TEN-002",
+          "title": "ActiveRecord Tenant Scoping",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\billing\\subscription.rb",
+              "symbol": "Subscription",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Subscription defined in subscription.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\deliverables\\asset.rb",
+              "symbol": "Asset",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Asset defined in asset.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\deliverables\\deliverable.rb",
+              "symbol": "Deliverable",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Deliverable defined in deliverable.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\api_key.rb",
+              "symbol": "ApiKey",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model ApiKey defined in api_key.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\profile.rb",
+              "symbol": "Profile",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Profile defined in profile.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\marketplace\\service_offering.rb",
+              "symbol": "ServiceOffering",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model ServiceOffering defined in service_offering.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission.rb",
+              "symbol": "Mission",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Mission defined in mission.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission_product.rb",
+              "symbol": "MissionProduct",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model MissionProduct defined in mission_product.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\missions\\mission_requirement.rb",
+              "symbol": "MissionRequirement",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model MissionRequirement defined in mission_requirement.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\notification.rb",
+              "symbol": "Notification",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Notification defined in notification.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\associated_operator.rb",
+              "symbol": "AssociatedOperator",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model AssociatedOperator defined in associated_operator.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\coverage_area.rb",
+              "symbol": "CoverageArea",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model CoverageArea defined in coverage_area.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\drone.rb",
+              "symbol": "Drone",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Drone defined in drone.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\drone_payload.rb",
+              "symbol": "DronePayload",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model DronePayload defined in drone_payload.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\lead_inquiry.rb",
+              "symbol": "LeadInquiry",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model LeadInquiry defined in lead_inquiry.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_contract.rb",
+              "symbol": "OperatorContract",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model OperatorContract defined in operator_contract.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_data_product.rb",
+              "symbol": "OperatorDataProduct",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model OperatorDataProduct defined in operator_data_product.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_material.rb",
+              "symbol": "OperatorMaterial",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model OperatorMaterial defined in operator_material.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\operator_profile.rb",
+              "symbol": "OperatorProfile",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model OperatorProfile defined in operator_profile.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\payload.rb",
+              "symbol": "Payload",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Payload defined in payload.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\payout_profile.rb",
+              "symbol": "PayoutProfile",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model PayoutProfile defined in payout_profile.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\pilot.rb",
+              "symbol": "Pilot",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Pilot defined in pilot.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\operators\\support_request.rb",
+              "symbol": "SupportRequest",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model SupportRequest defined in support_request.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_entitlement.rb",
+              "symbol": "OrganizationEntitlement",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model OrganizationEntitlement defined in organization_entitlement.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_membership.rb",
+              "symbol": "OrganizationMembership",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model OrganizationMembership defined in organization_membership.rb."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\projects\\project.rb",
+              "symbol": "Project",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Project defined in project.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "26 domain models scoped with tenant associations."
+        },
+        {
+          "requirementId": "TEN-003",
+          "title": "Membership Association Model",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_membership.rb",
+              "symbol": "OrganizationMembership",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model OrganizationMembership defined in organization_membership.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Membership model OrganizationMembership found at C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\organization_membership.rb."
+        },
+        {
+          "requirementId": "TEN-004",
+          "title": "Pundit Authorization Policies",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\admin\\admin_policy.rb",
+              "symbol": "AdminPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy AdminPolicy protecting model Admin with actions [access, verify_operator, moderate_review, resolve_dispute, manage_categories, view_risk]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_event_policy.rb",
+              "symbol": "BannerEventPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy BannerEventPolicy protecting model BannerEvent with actions [index, show, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_placement_policy.rb",
+              "symbol": "BannerPlacementPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy BannerPlacementPolicy protecting model BannerPlacement with actions [index, show, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\ads\\banner_policy.rb",
+              "symbol": "BannerPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy BannerPolicy protecting model Banner with actions [index, show, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\billing\\payment_policy.rb",
+              "symbol": "PaymentPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy PaymentPolicy protecting model Payment with actions [index, confirm_payment, role_in, platform_admin]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\category_policy.rb",
+              "symbol": "CategoryPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy CategoryPolicy protecting model Category with actions [index, show, create, update, destroy, publish, archive, restore, manage_seo, manage_media, content_manager, admin]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\deliverables\\deliverable_policy.rb",
+              "symbol": "DeliverablePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy DeliverablePolicy protecting model Deliverable with actions [index, show, create, approve, reject, operator_on_mission]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\marketplace\\service_category_policy.rb",
+              "symbol": "ServiceCategoryPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ServiceCategoryPolicy protecting model ServiceCategory with actions [index, show, create, update, destroy]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\membership_policy.rb",
+              "symbol": "MembershipPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy MembershipPolicy protecting model Membership with actions [index, update, destroy, invite]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\missions\\mission_policy.rb",
+              "symbol": "MissionPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy MissionPolicy protecting model Mission with actions [index, show, create, update, publish, cancel, approve_deliverable, public_marketplace_visible]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\operators\\operator_profile_policy.rb",
+              "symbol": "OperatorProfilePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy OperatorProfilePolicy protecting model OperatorProfile with actions [show, update, manage_fleet]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\orders\\order_policy.rb",
+              "symbol": "OrderPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy OrderPolicy protecting model Order with actions [index, show, cancel, confirm_payment, complete, customer_side, operator_side]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\organization_policy.rb",
+              "symbol": "OrganizationPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy OrganizationPolicy protecting model Organization with actions [index, show, create, update, manage_members]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\projects\\project_policy.rb",
+              "symbol": "ProjectPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ProjectPolicy protecting model Project with actions [index, show, create, update, archive]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\quotes\\quote_policy.rb",
+              "symbol": "QuotePolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy QuotePolicy protecting model Quote with actions [index, show, create, submit, accept, reject, withdraw, customer_side, operator_side, operator_side_context]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\policies\\reviews\\review_policy.rb",
+              "symbol": "ReviewPolicy",
+              "evidence_type": "POLICY",
+              "detector": "RailsPolicyParser",
+              "confidence": "HIGH",
+              "description": "Pundit policy ReviewPolicy protecting model Review with actions [create, show, membership_active, record_org_match]."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "16 Pundit policies enforcing authorization boundaries."
+        }
+      ],
+      "existingImplementation": "Tenancy verified (4/4 requirements)",
+      "missingPieces": [],
+      "securityGaps": [],
+      "testGaps": [
+        "Cross-tenant isolation request specs"
+      ],
+      "dependencies": [
+        "authentication"
+      ]
+    },
+    {
+      "capabilityId": "billing",
+      "name": "SaaS Billing, Subscriptions & Monetization",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\billing\\plan.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\billing\\stripe_config_controller.rb",
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\webhooks\\stripe_controller.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\billing\\plan.rb",
+          "symbol": "Plan",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model Plan defined in plan.rb."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\billing\\stripe_config_controller.rb",
+          "symbol": "StripeConfigController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller StripeConfigController with actions [show]."
+        },
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\webhooks\\stripe_controller.rb",
+          "symbol": "StripeController",
+          "evidence_type": "CODE_SYMBOL",
+          "detector": "RailsControllerParser",
+          "confidence": "HIGH",
+          "description": "Controller StripeController with actions [create]."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "BILL-001",
+          "title": "Subscription & Plan Models",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\billing\\plan.rb",
+              "symbol": "Plan",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model Plan defined in plan.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Subscription model Plan found at C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\billing\\plan.rb."
+        },
+        {
+          "requirementId": "BILL-002",
+          "title": "Stripe Webhook Handler",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\billing\\stripe_config_controller.rb",
+              "symbol": "StripeConfigController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller StripeConfigController with actions [show]."
+            },
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\controllers\\api\\v1\\webhooks\\stripe_controller.rb",
+              "symbol": "StripeController",
+              "evidence_type": "CODE_SYMBOL",
+              "detector": "RailsControllerParser",
+              "confidence": "HIGH",
+              "description": "Controller StripeController with actions [create]."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Stripe webhook/billing controller found."
+        }
+      ],
+      "existingImplementation": "Billing partially implemented (2/2 requirements)",
+      "missingPieces": [],
+      "securityGaps": [
+        "Stripe webhook signature validation verification required"
+      ],
+      "testGaps": [
+        "Webhook replay protection tests"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "api_keys",
+      "name": "Programmatic API Keys",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\api_key.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\api_key.rb",
+          "symbol": "ApiKey",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model ApiKey defined in api_key.rb."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "KEY-001",
+          "title": "ApiKey Model & Storage",
+          "severity": "P0_CRITICAL",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\api_key.rb",
+              "symbol": "ApiKey",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model ApiKey defined in api_key.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "ApiKey model ApiKey found at C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\enterprises\\api_key.rb."
+        }
+      ],
+      "existingImplementation": "ApiKey model with SHA-256 storage verified",
+      "missingPieces": [],
+      "securityGaps": [
+        "Ensure raw keys are never stored in plain text"
+      ],
+      "testGaps": [
+        "Scope enforcement request specs"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "webhooks",
+      "name": "Outgoing Webhooks",
+      "status": "MISSING",
+      "priority": "P2",
+      "evidencePaths": [],
+      "evidence": [],
+      "requirements": [
+        {
+          "requirementId": "WHK-001",
+          "title": "WebhookEndpoint Model",
+          "severity": "P2_NORMAL",
+          "status": "MISSING",
+          "evidence": [],
+          "confidence": "HIGH",
+          "explanation": "No WebhookEndpoint model found."
+        }
+      ],
+      "existingImplementation": "None",
+      "missingPieces": [
+        "WebhookEndpoint Model"
+      ],
+      "securityGaps": [
+        "SSRF protection on webhook destination URLs"
+      ],
+      "testGaps": [
+        "HMAC signature verification spec"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "admin",
+      "name": "Operations & Backoffice Control",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "app/admin"
+      ],
+      "evidence": [
+        {
+          "file": "app/admin",
+          "evidence_type": "ADMIN_RESOURCE",
+          "confidence": "HIGH",
+          "description": "ActiveAdmin with 26 resources."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "ADM-001",
+          "title": "ActiveAdmin Backoffice Setup",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "app/admin",
+              "evidence_type": "ADMIN_RESOURCE",
+              "confidence": "HIGH",
+              "description": "ActiveAdmin with 26 resources."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "ActiveAdmin configured with 26 resources."
+        }
+      ],
+      "existingImplementation": "ActiveAdmin with 26 resources",
+      "missingPieces": [],
+      "securityGaps": [
+        "Admin authentication and role authorization"
+      ],
+      "testGaps": [
+        "Admin authorization specs"
+      ],
+      "dependencies": [
+        "authentication"
+      ]
+    },
+    {
+      "capabilityId": "audit",
+      "name": "Immutable Security Audit Trails",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\audit_log.rb"
+      ],
+      "evidence": [
+        {
+          "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\audit_log.rb",
+          "symbol": "AuditLog",
+          "evidence_type": "MODEL",
+          "detector": "RailsModelParser",
+          "confidence": "HIGH",
+          "description": "ActiveRecord model AuditLog defined in audit_log.rb."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "AUD-001",
+          "title": "Audit Log Model",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\audit_log.rb",
+              "symbol": "AuditLog",
+              "evidence_type": "MODEL",
+              "detector": "RailsModelParser",
+              "confidence": "HIGH",
+              "description": "ActiveRecord model AuditLog defined in audit_log.rb."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Audit model AuditLog found at C:\\Users\\Bobi\\Desktop\\drone\\dronehub\\backend\\app\\models\\audit_log.rb."
+        }
+      ],
+      "existingImplementation": "Audit model present",
+      "missingPieces": [],
+      "securityGaps": [
+        "Enforce database immutability"
+      ],
+      "testGaps": [
+        "Audit metadata PII redaction specs"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "telemetry",
+      "name": "Product Analytics & SaaS KPIs",
+      "status": "MISSING",
+      "priority": "P2",
+      "evidencePaths": [],
+      "evidence": [],
+      "requirements": [
+        {
+          "requirementId": "TEL-001",
+          "title": "Telemetry Event Ingestion",
+          "severity": "P2_NORMAL",
+          "status": "MISSING",
+          "evidence": [],
+          "confidence": "HIGH",
+          "explanation": "No Telemetry model found."
+        }
+      ],
+      "existingImplementation": "None",
+      "missingPieces": [
+        "Telemetry Event Ingestion"
+      ],
+      "securityGaps": [
+        "GDPR/LGPD IP anonymization"
+      ],
+      "testGaps": [
+        "Daily rollup verification specs"
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityId": "health",
+      "name": "Health Monitoring & Node Observability",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "config/routes.rb"
+      ],
+      "evidence": [
+        {
+          "file": "config/routes.rb",
+          "evidence_type": "ROUTE",
+          "confidence": "HIGH",
+          "description": "Found /up or /health route."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "HLT-001",
+          "title": "Liveness & Health Probe",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "config/routes.rb",
+              "evidence_type": "ROUTE",
+              "confidence": "HIGH",
+              "description": "Found /up or /health route."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Healthcheck probe route verified."
+        }
+      ],
+      "existingImplementation": "Liveness health endpoint present",
+      "missingPieces": [],
+      "securityGaps": [
+        "Ensure credentials never leak in health payload"
+      ],
+      "testGaps": [
+        "Dependency timeout probe test"
+      ],
+      "dependencies": []
+    },
+    {
+      "capabilityId": "branding",
+      "name": "White-Labeling & Visual Theming",
+      "status": "MISSING",
+      "priority": "P3",
+      "evidencePaths": [],
+      "evidence": [],
+      "requirements": [
+        {
+          "requirementId": "BRD-001",
+          "title": "Tenant Branding Model",
+          "severity": "P3_MINOR",
+          "status": "MISSING",
+          "evidence": [],
+          "confidence": "HIGH",
+          "explanation": "No Branding customization models found."
+        }
+      ],
+      "existingImplementation": "None",
+      "missingPieces": [
+        "Tenant Branding Model"
+      ],
+      "securityGaps": [
+        "Sanitize user CSS/HTML"
+      ],
+      "testGaps": [
+        "Anti-XSS injection spec"
+      ],
+      "dependencies": [
+        "tenancy"
+      ]
+    },
+    {
+      "capabilityId": "mcp",
+      "name": "Model Context Protocol & Agentic Integration",
+      "status": "PASS",
+      "priority": "P3",
+      "evidencePaths": [
+        "@mcp-platform/core",
+        "@mcp-platform/shared-tools"
+      ],
+      "evidence": [
+        {
+          "file": "packages/core",
+          "evidence_type": "CODE_SYMBOL",
+          "confidence": "HIGH",
+          "description": "@mcp-platform/core registry."
+        },
+        {
+          "file": "packages/shared-tools",
+          "evidence_type": "API_CONTRACT",
+          "confidence": "HIGH",
+          "description": "Zod tool schema definitions."
+        }
+      ],
+      "requirements": [
+        {
+          "requirementId": "MCP-001",
+          "title": "Core Registry & Transport",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "packages/core",
+              "evidence_type": "CODE_SYMBOL",
+              "confidence": "HIGH",
+              "description": "@mcp-platform/core registry."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "MCP Core registry and HTTP transport verified."
+        },
+        {
+          "requirementId": "MCP-002",
+          "title": "Zod Schema & Error Contracts",
+          "severity": "P1_MAJOR",
+          "status": "PASS",
+          "evidence": [
+            {
+              "file": "packages/shared-tools",
+              "evidence_type": "API_CONTRACT",
+              "confidence": "HIGH",
+              "description": "Zod tool schema definitions."
+            }
+          ],
+          "confidence": "HIGH",
+          "explanation": "Zod schemas and error normalization contracts verified."
+        }
+      ],
+      "existingImplementation": "MCP Platform with Core Registry, Rate Limiting, ProposalEngine (HITL), Zod validation, and Rails API adapters",
+      "missingPieces": [],
+      "securityGaps": [],
+      "testGaps": [],
+      "dependencies": [
+        "api_keys",
+        "tenancy"
+      ]
+    }
+  ]
+}

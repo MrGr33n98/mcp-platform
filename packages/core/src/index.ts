@@ -31,4 +31,15 @@ export type {
 export { startStdioServer } from "./transport/stdio.js";
 export { createPlatformInfoTool } from "./tools/platform-info.js";
 export type { PlatformInfo } from "./tools/platform-info.js";
-export type { ToolDefinition } from "./tools/tool-definition.js";
+export type { ToolDefinition, ToolRiskLevel } from "./tools/tool-definition.js";
+export { MetricsCollector } from "./metrics.js";
+export type { MetricSummary, ToolExecutionMetric } from "./metrics.js";
+export { TokenBucketRateLimiter } from "./rate-limiter.js";
+export type { RateLimiter, RateLimiterOptions } from "./rate-limiter.js";
+export { createHttpServer } from "./transport/http.js";
+export type { CreateHttpServerOptions, HttpServerInstance } from "./transport/http.js";
+export { ProposalEngine, computePayloadHash } from "./governance/proposal-engine.js";
+export type { Proposal, ProposalStatus, ProposeActionOptions } from "./governance/proposal-engine.js";
+
+
+
