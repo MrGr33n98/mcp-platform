@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "oest-platform": {
+      "command": "node",
+      "args": [
+        "C:/Users/Bobi/Desktop/mcp-platform/apps/oest-mcp/dist/index.js"
+      ],
+      "env": {
+        "OEST_API_URL": "http://localhost:3001",
+        "OEST_MCP_API_KEY": "dh_live_secret_key_a",
+        "OEST_DASHBOARD_KIND": "enterprise",
+        "MCP_LOG_LEVEL": "info"
+      }
+    },
+    "avalia-solar": {
+      "command": "node",
+      "args": [
+        "C:/Users/Bobi/Desktop/mcp-platform/apps/avalia-mcp/dist/index.js"
+      ],
+      "env": {
+        "AVALIA_API_URL": "http://localhost:3000",
+        "AVALIA_MCP_API_KEY": "avalia_live_secret_key",
+        "MCP_LOG_LEVEL": "info"
+      }
+    }
+  }
+}
